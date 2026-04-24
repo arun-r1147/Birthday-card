@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Invite 🎀</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* SCREENS */
+.screen {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.screen.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* BACKGROUND */
+.bg-img {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: top;
+  animation: zoom 12s ease-in-out infinite alternate;
+}
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(255,182,193,0.4), transparent);
+}
+
+/* CONTENT */
+.content {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+}
+
+/* GLASS EFFECT */
+.glass {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-radius: 20px;
+  padding: 18px 22px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.glass h1,
+.glass p,
+.glass .name {
+  color: white;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* TEXT */
+h1 {
+  font-family: 'Pacifico';
+  font-size: clamp(26px,7vw,40px);
+}
+p {
+  font-size: clamp(14px,4vw,18px);
+}
+.name {
+  font-family: 'Pacifico';
+  font-size: clamp(32px,8vw,48px);
+  color: #ff69b4;
+}
+
+/* FINAL CARD */
+.card {
+  background: white;
+  color: #444;
+  padding: 20px;
+  border-radius: 20px;
+}
+.magic-text {
+  font-family: 'Pacifico';
+  font-size: clamp(26px,7vw,40px);
+  margin-bottom: 20px;
+  animation: glow 2s infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow: 0 0 10px #fff; }
+  to { text-shadow: 0 0 25px #ffb6c1; }
+}
+.final-card {
+  opacity: 0;
+  transform: scale(0.7);
+  transition: 1s ease;
+}
+.final-card.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* SPARKLES */
+.global-sparkles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+.sparkle {
+  position: absolute;
+  font-size: 16px;
+  opacity: 0.9;
+  z-index: 15;
+  animation: sparkleFloat linear forwards;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.8));
+}
+@keyframes sparkleFloat {
+  0% { transform: translateY(40px) scale(0.7); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
+}
+
+/* CONFETTI FALL */
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 12px;
+  top: -10px;
+  z-index: 20;
+  border-radius: 2px;
+  opacity: 0.9;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(110vh) rotate(720deg); }
+}
+
+/* BALLOONS */
+.balloon-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.balloon {
+  position: absolute;
+  bottom: -100px;
+  width: 40px;
+  height: 50px;
+  border-radius: 50%;
+  animation: rise 6s linear forwards;
+}
+.balloon::after {
+  content: '';
+  width: 2px;
+  height: 40px;
+  background: #ccc;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+}
+@keyframes rise {
+  to { transform: translateY(-120vh); }
+}
+
+/* ZOOM */
+@keyframes zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="global-sparkles" id="globalSparkles"></div>
+
+<audio id="music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<!-- SLIDES -->
+
+<div class="screen active" id="s0">
+  <img src="assets/zoya-5.webp" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="glass">
+      <h1>🎀 You're Invited 🎀</h1>
+      <p>To something magical 💖</p>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s1">
+  <img src="assets/zoya-1.webp" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="glass">
+      <h1>A little princess is turning ONE 👶✨</h1>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s2">
+  <img src="assets/zoya-2.webp" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="glass">
+      <p>Our little sunshine 🌼</p>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s3">
+  <img src="assets/zoya-3.webp" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <div class="glass">
+      <h1>Celebrating</h1>
+      <div class="name">Zoya 🎀</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s4">
+  <img src="assets/zoya-4.webp" class="bg-img">
+  <div class="overlay"></div>
+
+  <div class="content">
+    <div class="glass">
+      <div class="magic-text">✨ A Special Day ✨</div>
+
+      <div class="final-card" id="finalCard">
+        <div class="card">
+          <h2>🎂 Join us!</h2>
+          <p>📅 Date: 10th May</p>
+          <p>⏰ Time: 5:00 PM</p>
+          <p>📍 Location: Your Venue</p>
+          <p>💖 Let’s celebrate together!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="balloon-container" id="balloons"></div>
+</div>
+
+<script>
+let current = 0;
+const total = 5;
+const duration = 3500;
+
+/* MUSIC */
+document.body.addEventListener("click", () => {
+  document.getElementById("music").play();
+}, { once: true });
+
+/* SLIDES */
+function nextScreen() {
+  document.getElementById("s" + current).classList.remove("active");
+  current++;
+
+  if (current < total) {
+    document.getElementById("s" + current).classList.add("active");
+  }
+
+  if (current === 4) {
+    setTimeout(showFinalMagic, 1200);
+  }
+}
+
+setInterval(() => {
+  if (current < total - 1) nextScreen();
+}, duration);
+
+/* FINAL MAGIC */
+function showFinalMagic() {
+  document.getElementById("finalCard").classList.add("show");
+  startConfetti();
+  releaseBalloons();
+}
+
+/* SPARKLES */
+setInterval(() => {
+  const s = document.createElement("div");
+  s.className = "sparkle";
+  s.innerHTML = Math.random() > 0.5 ? "✨" : "💖";
+
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.top = Math.random() * 100 + "vh";
+  s.style.animationDuration = (5 + Math.random() * 3) + "s";
+
+  document.getElementById("globalSparkles").appendChild(s);
+
+  setTimeout(() => s.remove(), 7000);
+}, 250);
+
+/* CONFETTI */
+function startConfetti() {
+  for (let i = 0; i < 80; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+    c.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+    document.body.appendChild(c);
+
+    setTimeout(() => c.remove(), 6000);
+  }
+}
+
+/* BALLOONS */
+function releaseBalloons() {
+  const colors = ["#ffb6c1","#ffd6cc","#e6ccff","#d4f5e9"];
+
+  for (let i = 0; i < 15; i++) {
+    let b = document.createElement("div");
+    b.className = "balloon";
+
+    b.style.left = Math.random() * 100 + "vw";
+    b.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+    document.getElementById("balloons").appendChild(b);
+  }
+}
+</script>
+
+</body>
+</html>

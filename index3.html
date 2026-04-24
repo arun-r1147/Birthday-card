@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Zoya turns ONE 🎀</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --rose: #f2a0b0;
+        --blush: #f9d4dc;
+        --cream: #fef6f0;
+        --lilac: #ddc8f0;
+        --gold: #e8c97a;
+        --white: #fff;
+        --text-dark: #3a2530;
+        --text-mid: #6b4555;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: #1a0d12;
+        overflow-x: hidden;
+        color: var(--white);
+      }
+
+      /* FLOATING PETALS */
+      .petals-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 100;
+        overflow: hidden;
+      }
+      .petal {
+        position: absolute;
+        top: -40px;
+        opacity: 0;
+        animation: petalFall linear infinite;
+        font-size: 14px;
+      }
+      @keyframes petalFall {
+        0% {
+          transform: translateY(0) rotate(0deg) scale(0.8);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.7;
+        }
+        90% {
+          opacity: 0.4;
+        }
+        100% {
+          transform: translateY(110vh) rotate(360deg) scale(1.1);
+          opacity: 0;
+        }
+      }
+
+      /* EACH STORY SLIDE */
+      .slide {
+        position: relative;
+        width: 100%;
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* IMAGE FILLS */
+      .slide-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+      }
+
+      /* GRADIENT OVERLAYS */
+      .overlay-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 65%;
+        background: linear-gradient(
+          to top,
+          rgba(26, 8, 18, 0.92) 0%,
+          rgba(26, 8, 18, 0.6) 50%,
+          transparent 100%
+        );
+      }
+      .overlay-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 30%;
+        background: linear-gradient(
+          to bottom,
+          rgba(26, 8, 18, 0.5) 0%,
+          transparent 100%
+        );
+      }
+      .overlay-full {
+        position: absolute;
+        inset: 0;
+        background: rgba(26, 8, 18, 0.4);
+      }
+
+      /* TEXT CONTENT */
+      .slide-text {
+        position: relative;
+        z-index: 10;
+        margin-top: auto;
+        padding: 0 28px 52px;
+      }
+      .slide-text.center {
+        text-align: center;
+        padding-bottom: 60px;
+      }
+      .slide-text.top-center {
+        margin-top: 0;
+        padding-top: 54px;
+        text-align: center;
+      }
+
+      /* TYPOGRAPHY */
+      .tag {
+        display: inline-block;
+        font-family: "DM Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--rose);
+        margin-bottom: 12px;
+        opacity: 0.9;
+      }
+      .title-serif {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 300;
+        line-height: 1.1;
+      }
+      .t-xl {
+        font-size: clamp(48px, 14vw, 80px);
+        letter-spacing: -0.01em;
+      }
+      .t-lg {
+        font-size: clamp(36px, 11vw, 60px);
+      }
+      .t-md {
+        font-size: clamp(28px, 8vw, 42px);
+      }
+      .t-sm {
+        font-size: clamp(22px, 6vw, 32px);
+      }
+      .italic {
+        font-style: italic;
+      }
+      .gold {
+        color: var(--gold);
+      }
+      .blush {
+        color: var(--blush);
+      }
+      .lilac {
+        color: var(--lilac);
+      }
+
+      .body-text {
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.7;
+        margin-top: 12px;
+      }
+
+      /* DECORATIVE LINE */
+      .deco-line {
+        width: 40px;
+        height: 1px;
+        background: var(--rose);
+        opacity: 0.6;
+        margin: 16px 0;
+      }
+      .deco-line.center {
+        margin: 16px auto;
+      }
+
+      /* SLIDE 1 — COVER */
+      #s1 {
+        background: #1a0d12;
+      }
+      #s1 .slide-img {
+        object-position: center 20%;
+      }
+
+      /* SLIDE 2 — PORTRAIT */
+      #s2 .slide-img {
+        object-position: center 30%;
+      }
+
+      /* SLIDE 3 — LANDSCAPE / WIDER */
+      #s3 .slide-img {
+        object-position: center 40%;
+        min-height: 70svh;
+      }
+      #s3 {
+        min-height: 100svh;
+        justify-content: flex-end;
+      }
+
+      /* SLIDE 4 — CLOSE UP */
+      #s4 .slide-img {
+        object-position: center 15%;
+      }
+
+      /* FINAL CARD SLIDE */
+      #s5 {
+        min-height: 100svh;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px 60px;
+      }
+      #s5 .slide-img {
+        object-position: center 50%;
+        filter: brightness(0.35) saturate(1.3);
+      }
+
+      /* INVITE CARD */
+      .invite-card {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 380px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 0.5px solid rgba(255, 255, 255, 0.18);
+        border-radius: 24px;
+        padding: 36px 28px 40px;
+        text-align: center;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .card-badge {
+        display: inline-block;
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 0.5px solid rgba(232, 201, 122, 0.4);
+        border-radius: 40px;
+        padding: 5px 16px;
+        margin-bottom: 24px;
+        font-family: "DM Sans", sans-serif;
+        font-weight: 400;
+      }
+
+      .card-name {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(52px, 16vw, 72px);
+        font-weight: 300;
+        font-style: italic;
+        color: var(--blush);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+
+      .card-sub {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 18px;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 32px;
+      }
+
+      .card-divider {
+        width: 100%;
+        height: 0.5px;
+        background: rgba(255, 255, 255, 0.12);
+        margin-bottom: 28px;
+      }
+
+      .detail-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 18px;
+        text-align: left;
+      }
+      .detail-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(242, 160, 176, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 14px;
+      }
+      .detail-label {
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.4);
+        font-family: "DM Sans", sans-serif;
+        margin-bottom: 3px;
+      }
+      .detail-value {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.2;
+      }
+
+      .card-footer {
+        margin-top: 32px;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 16px;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      /* CONFETTI */
+      .confetti-piece {
+        position: fixed;
+        width: 7px;
+        height: 10px;
+        top: -10px;
+        border-radius: 2px;
+        z-index: 200;
+        pointer-events: none;
+        animation: confettiFall linear forwards;
+      }
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(0) rotate(0deg) scaleX(1);
+          opacity: 1;
+        }
+        80% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(105vh) rotate(720deg) scaleX(-1);
+          opacity: 0;
+        }
+      }
+
+      /* SCROLL INDICATOR */
+      .scroll-hint {
+        position: absolute;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        opacity: 0.5;
+        animation: bounce 2s ease-in-out infinite;
+      }
+      .scroll-hint span {
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        font-family: "DM Sans", sans-serif;
+      }
+      .scroll-arrow {
+        width: 1px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.6);
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(6px);
+        }
+      }
+
+      /* REVEAL ANIMATIONS */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 {
+        transition-delay: 0.15s;
+      }
+      .reveal-delay-2 {
+        transition-delay: 0.3s;
+      }
+      .reveal-delay-3 {
+        transition-delay: 0.45s;
+      }
+
+      /* MUSIC BTN */
+      .music-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 300;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 0.5px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.2s;
+      }
+      .music-btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="petals-layer" id="petals"></div>
+
+    <audio id="music" loop>
+      <source
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      />
+    </audio>
+    <button class="music-btn" id="musicBtn" title="Toggle music">🎵</button>
+
+    <!-- SLIDE 1 — OPENING COVER -->
+    <div class="slide" id="s1">
+      <img src="assets/zoya-5.webp" class="slide-img" alt="" />
+      <div class="overlay-top"></div>
+      <div class="overlay-bottom"></div>
+
+      <div class="slide-text">
+        <div class="tag reveal">An intimate invitation</div>
+        <h1 class="title-serif t-xl reveal reveal-delay-1">
+          You're<br /><span class="gold italic">invited</span>
+        </h1>
+        <p class="body-text reveal reveal-delay-2">
+          To something soft, sweet, and full of love.
+        </p>
+      </div>
+
+      <div class="scroll-hint">
+        <span>scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 — BABY PORTRAIT -->
+    <div class="slide" id="s2">
+      <img src="assets/zoya-1.webp" class="slide-img" alt="" />
+      <div class="overlay-bottom"></div>
+
+      <div class="slide-text">
+        <div class="tag reveal">One little year</div>
+        <h2 class="title-serif t-lg reveal reveal-delay-1">
+          A princess<br /><span class="blush italic">turns one</span>
+        </h2>
+        <div class="deco-line reveal reveal-delay-2"></div>
+        <p class="body-text reveal reveal-delay-2">
+          365 days of wonder, smiles, and magic.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 — WIDER / LANDSCAPE FEEL -->
+    <div class="slide" id="s3">
+      <img src="assets/zoya-7.webp" class="slide-img" alt="" />
+      <div class="overlay-full"></div>
+      <div class="overlay-bottom"></div>
+
+      <div class="slide-text center">
+        <div class="tag reveal">Our little sunshine</div>
+        <h2 class="title-serif t-lg italic blush reveal reveal-delay-1">
+          Zoya
+        </h2>
+        <p class="body-text reveal reveal-delay-2" style="text-align: center">
+          She lights up every room she enters.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 — CLOSE UP -->
+    <div class="slide" id="s4">
+      <img src="assets/zoya-6.webp" class="slide-img" alt="" />
+      <div class="overlay-bottom"></div>
+
+      <div class="slide-text">
+        <div class="tag reveal">Mark your calendars</div>
+        <h2 class="title-serif t-md reveal reveal-delay-1">
+          Come celebrate<br /><span class="lilac italic">with us</span>
+        </h2>
+        <p class="body-text reveal reveal-delay-2">
+          A day filled with cake, confetti, and endless joy awaits.
+        </p>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 — FINAL INVITE CARD -->
+    <div class="slide" id="s5">
+      <img src="assets/zoya-4.webp" class="slide-img" alt="" />
+
+      <div class="invite-card reveal" id="inviteCard">
+        <div class="card-badge">Birthday Celebration</div>
+
+        <div class="card-name">Zoya</div>
+        <div class="card-sub">is turning one</div>
+
+        <div class="card-divider"></div>
+
+        <div class="detail-row">
+          <div class="detail-icon">📅</div>
+          <div>
+            <div class="detail-label">Date</div>
+            <div class="detail-value">10th May, 2025</div>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-icon">⏰</div>
+          <div>
+            <div class="detail-label">Time</div>
+            <div class="detail-value">5:00 PM onwards</div>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <div class="detail-icon">📍</div>
+          <div>
+            <div class="detail-label">Venue</div>
+            <div class="detail-value">
+              Your Venue Name<br /><span style="font-size: 15px; opacity: 0.6"
+                >City, State</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">with love &amp; joy 💖</div>
+      </div>
+    </div>
+
+    <script>
+      /* PETALS */
+      const emojis = ["🌸", "🌺", "✨", "💮", "🩷", "💫"];
+      function spawnPetal() {
+        const p = document.createElement("div");
+        p.className = "petal";
+        p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.animationDuration = 6 + Math.random() * 6 + "s";
+        p.style.animationDelay = Math.random() * 4 + "s";
+        p.style.fontSize = 10 + Math.random() * 10 + "px";
+        document.getElementById("petals").appendChild(p);
+        setTimeout(() => p.remove(), 14000);
+      }
+      setInterval(spawnPetal, 600);
+
+      /* SCROLL REVEAL */
+      const revealEls = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.15 },
+      );
+      revealEls.forEach((el) => observer.observe(el));
+
+      /* CONFETTI when invite card visible */
+      let confettiDone = false;
+      const cardObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting && !confettiDone) {
+              confettiDone = true;
+              launchConfetti();
+            }
+          });
+        },
+        { threshold: 0.4 },
+      );
+      cardObserver.observe(document.getElementById("inviteCard"));
+
+      function launchConfetti() {
+        const colors = [
+          "#f2a0b0",
+          "#ddc8f0",
+          "#e8c97a",
+          "#f9d4dc",
+          "#c8e6f9",
+          "#a8f0d0",
+        ];
+        for (let i = 0; i < 90; i++) {
+          setTimeout(() => {
+            const c = document.createElement("div");
+            c.className = "confetti-piece";
+            c.style.left = Math.random() * 100 + "vw";
+            c.style.background =
+              colors[Math.floor(Math.random() * colors.length)];
+            c.style.animationDuration = 2.5 + Math.random() * 2.5 + "s";
+            c.style.animationDelay = "0s";
+            c.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 6000);
+          }, i * 30);
+        }
+      }
+
+      /* MUSIC */
+      const btn = document.getElementById("musicBtn");
+      const music = document.getElementById("music");
+      let playing = false;
+      btn.addEventListener("click", () => {
+        if (playing) {
+          music.pause();
+          btn.textContent = "🎵";
+          playing = false;
+        } else {
+          music.play();
+          btn.textContent = "🔇";
+          playing = true;
+        }
+      });
+      document.body.addEventListener(
+        "click",
+        () => {
+          if (!playing) {
+            music
+              .play()
+              .then(() => {
+                playing = true;
+                btn.textContent = "🔇";
+              })
+              .catch(() => {});
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>
