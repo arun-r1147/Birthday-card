@@ -1,362 +1,297 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Birthday Invite 🎀</title>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Invite 🎀</title>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        font-family: "Poppins", sans-serif;
-      }
+<style>
+body { margin:0; overflow:hidden; font-family:'Poppins',sans-serif; }
 
-      /* Screens */
-      .screen {
-        position: absolute;
-        width: 100%;
-        height: 100vh;
-        opacity: 0;
-        transition: opacity 1s ease;
-      }
-      .screen.active {
-        opacity: 1;
-        z-index: 1;
-      }
+/* STORY BARS */
+.story-bars {
+  position: fixed;
+  top: 10px; left: 10px; right: 10px;
+  display: flex; gap: 5px; z-index: 10;
+}
+.bar { flex:1; height:4px; background:rgba(255,255,255,0.3); border-radius:5px; overflow:hidden; }
+.progress { height:100%; width:0%; background:white; }
 
-      /* Background */
-      .bg-img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        animation: zoom 12s ease-in-out infinite alternate;
-      }
+/* Screens */
+.screen {
+  position:absolute; width:100%; height:100vh;
+  opacity:0; transition:opacity 1s ease;
+}
+.screen.active { opacity:1; z-index:1; }
 
-      /* Overlay */
-      .overlay {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          to top,
-          rgba(255, 182, 193, 0.6),
-          transparent
-        );
-      }
+/* Background */
+.bg-img {
+  position:absolute; width:100%; height:100%;
+  object-fit:cover;
+  animation: zoom 12s ease-in-out infinite alternate;
+}
+.overlay {
+  position:absolute; width:100%; height:100%;
+  background:linear-gradient(to top, rgba(255,182,193,0.6), transparent);
+}
 
-      /* Content centered */
-      .content {
-        position: relative;
-        z-index: 2;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
-        color: white;
-        animation: fadeUp 0.8s ease;
-      }
+/* Content */
+.content {
+  position:relative; z-index:2;
+  height:100%;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  text-align:center;
+  padding:20px;
+  color:white;
+}
 
-      /* Typography */
-      h1 {
-        font-family: "Pacifico", cursive;
-        font-size: clamp(26px, 7vw, 40px);
-      }
-      p {
-        font-size: clamp(14px, 4vw, 18px);
-      }
-      .name {
-        font-family: "Pacifico", cursive;
-        font-size: clamp(32px, 8vw, 48px);
-        color: #ff69b4;
-      }
+/* Typography */
+h1 { font-family:'Pacifico'; font-size:clamp(26px,7vw,40px); }
+p { font-size:clamp(14px,4vw,18px); }
+.name { font-family:'Pacifico'; font-size:clamp(32px,8vw,48px); color:#ff69b4; }
 
-      /* Card */
-      .card {
-        background: white;
-        color: #444;
-        padding: 20px;
-        border-radius: 20px;
-      }
+/* Card */
+.card {
+  background:white; color:#444;
+  padding:20px; border-radius:20px;
+}
 
-      /* Final reveal */
-      .magic-text {
-        font-family: "Pacifico", cursive;
-        font-size: clamp(26px, 7vw, 40px);
-        margin-bottom: 20px;
-        animation: glow 2s infinite alternate;
-      }
+/* Final reveal */
+.magic-text {
+  font-family:'Pacifico';
+  font-size:clamp(26px,7vw,40px);
+  margin-bottom:20px;
+  animation: glow 2s infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow:0 0 10px #fff; }
+  to { text-shadow:0 0 25px #ffb6c1; }
+}
 
-      @keyframes glow {
-        from {
-          text-shadow: 0 0 10px #fff;
-        }
-        to {
-          text-shadow: 0 0 25px #ffb6c1;
-        }
-      }
+.final-card {
+  opacity:0;
+  transform:scale(0.7);
+  transition:1s ease;
+}
+.final-card.show {
+  opacity:1;
+  transform:scale(1);
+}
 
-      .final-card {
-        opacity: 0;
-        transform: scale(0.7);
-        transition: 1s ease;
-      }
-      .final-card.show {
-        opacity: 1;
-        transform: scale(1);
-      }
+/* Sparkles */
+.global-sparkles {
+  position:fixed; width:100%; height:100%;
+  pointer-events:none; z-index:0;
+}
+.sparkle {
+  position:absolute;
+  font-size:10px;
+  animation:sparkleFloat linear infinite;
+}
+@keyframes sparkleFloat {
+  0% { transform:translateY(0); opacity:0; }
+  50% { opacity:0.8; }
+  100% { transform:translateY(-100vh); opacity:0; }
+}
 
-      /* Sparkles */
-      .sparkle-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-      .sparkle {
-        position: absolute;
-        font-size: 14px;
-        animation: sparkleFloat linear infinite;
-        opacity: 0.8;
-      }
-      @keyframes sparkleFloat {
-        0% {
-          transform: translateY(0) scale(0.8);
-          opacity: 0;
-        }
-        50% {
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(-100vh) scale(1.2);
-          opacity: 0;
-        }
-      }
+/* Confetti */
+.confetti {
+  position:absolute;
+  width:8px; height:8px;
+  top:-10px;
+  animation:fall linear infinite;
+}
+@keyframes fall {
+  to { transform:translateY(100vh) rotate(360deg); }
+}
 
-      /* Confetti */
-      .confetti {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        top: -10px;
-        animation: fall linear infinite;
-      }
-      @keyframes fall {
-        to {
-          transform: translateY(100vh) rotate(360deg);
-        }
-      }
+/* Balloons */
+.balloon-container {
+  position:absolute; width:100%; height:100%;
+  pointer-events:none;
+}
+.balloon {
+  position:absolute;
+  bottom:-100px;
+  width:40px; height:50px;
+  border-radius:50%;
+  animation:rise 6s linear forwards;
+}
+.balloon::after {
+  content:'';
+  position:absolute;
+  width:2px; height:40px;
+  background:#ccc;
+  top:50px; left:50%;
+}
+@keyframes rise {
+  to { transform:translateY(-120vh); }
+}
 
-      /* Balloons */
-      .balloon-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-      .balloon {
-        position: absolute;
-        bottom: -100px;
-        width: 40px;
-        height: 50px;
-        border-radius: 50%;
-        animation: rise 6s linear forwards;
-      }
-      .balloon::after {
-        content: "";
-        position: absolute;
-        width: 2px;
-        height: 40px;
-        background: #ccc;
-        top: 50px;
-        left: 50%;
-      }
-      @keyframes rise {
-        to {
-          transform: translateY(-120vh);
-        }
-      }
+/* Animations */
+@keyframes zoom {
+  from { transform:scale(1); }
+  to { transform:scale(1.1); }
+}
+</style>
+</head>
 
-      /* Animations */
-      @keyframes zoom {
-        from {
-          transform: scale(1);
-        }
-        to {
-          transform: scale(1.1);
-        }
-      }
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
-  </head>
+<body>
 
-  <body>
-    <audio id="music" loop>
-      <source
-        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-      />
-    </audio>
+<!-- STORY BARS -->
+<div class="story-bars">
+  <div class="bar"><div class="progress" id="p0"></div></div>
+  <div class="bar"><div class="progress" id="p1"></div></div>
+  <div class="bar"><div class="progress" id="p2"></div></div>
+  <div class="bar"><div class="progress" id="p3"></div></div>
+  <div class="bar"><div class="progress" id="p4"></div></div>
+</div>
 
-    <!-- Slides -->
+<!-- GLOBAL SPARKLES -->
+<div class="global-sparkles" id="globalSparkles"></div>
 
-    <div class="screen active" id="s0">
-      <img src="https://picsum.photos/1080/1920?1" class="bg-img" />
-      <div class="overlay"></div>
-      <div class="content">
-        <h1>🎀 You're Invited 🎀</h1>
-        <p>To something magical 💖</p>
+<audio id="music" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<!-- Slides -->
+<div class="screen active" id="s0">
+  <img src="https://picsum.photos/1080/1920?1" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>🎀 You're Invited 🎀</h1>
+    <p>To something magical 💖</p>
+  </div>
+</div>
+
+<div class="screen" id="s1">
+  <img src="https://picsum.photos/1080/1920?2" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>A little princess is turning ONE 👶✨</h1>
+  </div>
+</div>
+
+<div class="screen" id="s2">
+  <img src="https://picsum.photos/1080/1920?3" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <p>Our little sunshine 🌼</p>
+  </div>
+</div>
+
+<div class="screen" id="s3">
+  <img src="https://picsum.photos/1080/1920?4" class="bg-img">
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>Celebrating</h1>
+    <div class="name">Baby Name 🎀</div>
+  </div>
+</div>
+
+<div class="screen" id="s4">
+  <img src="https://picsum.photos/1080/1920?5" class="bg-img">
+  <div class="overlay"></div>
+
+  <div class="content">
+    <div class="magic-text">✨ A Special Day ✨</div>
+    <div class="final-card" id="finalCard">
+      <div class="card">
+        <h2>🎂 Join us!</h2>
+        <p>📅 Date: 10th May</p>
+        <p>⏰ Time: 5:00 PM</p>
+        <p>📍 Location: Your Venue</p>
+        <p>💖 Let’s celebrate together!</p>
       </div>
     </div>
+  </div>
 
-    <div class="screen" id="s1">
-      <img src="https://picsum.photos/1080/1920?2" class="bg-img" />
-      <div class="overlay"></div>
-      <div class="content">
-        <h1>A little princess is turning ONE 👶✨</h1>
-      </div>
-    </div>
+  <div class="balloon-container" id="balloons"></div>
+</div>
 
-    <div class="screen" id="s2">
-      <img src="https://picsum.photos/1080/1920?3" class="bg-img" />
-      <div class="overlay"></div>
-      <div class="content">
-        <p>Our little sunshine 🌼</p>
-      </div>
-    </div>
+<script>
+let current=0, total=5, duration=3500;
+let progressInterval;
 
-    <div class="screen" id="s3">
-      <img src="https://picsum.photos/1080/1920?4" class="bg-img" />
-      <div class="overlay"></div>
-      <div class="content">
-        <h1>Celebrating</h1>
-        <div class="name">Baby Name 🎀</div>
-      </div>
-    </div>
+/* MUSIC */
+document.body.addEventListener("click",()=> {
+  document.getElementById("music").play();
+},{once:true});
 
-    <!-- FINAL SCREEN -->
-    <div class="screen" id="s4">
-      <img src="https://picsum.photos/1080/1920?5" class="bg-img" />
-      <div class="overlay"></div>
+/* PROGRESS */
+function startProgress(i){
+  clearInterval(progressInterval);
+  let bar=document.getElementById("p"+i);
+  let w=0;
+  progressInterval=setInterval(()=>{
+    w+=100/(duration/50);
+    bar.style.width=w+"%";
+    if(w>=100) clearInterval(progressInterval);
+  },50);
+}
 
-      <div class="content">
-        <div class="magic-text">✨ A Special Day ✨</div>
+/* SLIDES */
+function nextScreen(){
+  document.getElementById("s"+current).classList.remove("active");
+  current++;
+  if(current<total){
+    document.getElementById("s"+current).classList.add("active");
+    startProgress(current);
+  }
+  if(current===4){
+    setTimeout(showFinalMagic,1200);
+  }
+}
+setInterval(()=>{ if(current<total-1) nextScreen(); },duration);
 
-        <div class="final-card" id="finalCard">
-          <div class="card">
-            <h2>🎂 Join us!</h2>
-            <p>📅 Date: 10th May</p>
-            <p>⏰ Time: 5:00 PM</p>
-            <p>📍 Location: Your Venue</p>
-            <p>💖 Let’s celebrate together!</p>
-          </div>
-        </div>
-      </div>
+/* FINAL */
+function showFinalMagic(){
+  document.getElementById("finalCard").classList.add("show");
+  startConfetti();
+  releaseBalloons();
+}
 
-      <div class="sparkle-container" id="sparkles"></div>
-      <div class="balloon-container" id="balloons"></div>
-    </div>
+/* SPARKLES */
+setInterval(()=>{
+  let s=document.createElement("div");
+  s.className="sparkle";
+  s.innerHTML="✨";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(4+Math.random()*4)+"s";
+  document.getElementById("globalSparkles").appendChild(s);
+  setTimeout(()=>s.remove(),8000);
+},400);
 
-    <script>
-      let current = 0;
-      const total = 5;
-      let started = false;
+/* CONFETTI */
+function startConfetti(){
+  for(let i=0;i<60;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},80%,60%)`;
+    c.style.animationDuration=(2+Math.random()*3)+"s";
+    document.body.appendChild(c);
+  }
+}
 
-      /* Start music */
-      document.body.addEventListener("click", () => {
-        if (!started) {
-          document.getElementById("music").play();
-          started = true;
-        }
-      });
+/* BALLOONS */
+function releaseBalloons(){
+  let colors=["#ffb6c1","#ffd6cc","#e6ccff","#d4f5e9"];
+  for(let i=0;i<15;i++){
+    let b=document.createElement("div");
+    b.className="balloon";
+    b.style.left=Math.random()*100+"vw";
+    b.style.background=colors[Math.floor(Math.random()*colors.length)];
+    document.getElementById("balloons").appendChild(b);
+  }
+}
 
-      /* Slides */
-      function nextScreen() {
-        document.getElementById("s" + current).classList.remove("active");
-        current++;
-        if (current < total) {
-          document.getElementById("s" + current).classList.add("active");
-        }
+/* INIT */
+startProgress(0);
+</script>
 
-        if (current === 4) {
-          setTimeout(showFinalMagic, 1200);
-        }
-      }
-
-      setInterval(() => {
-        if (current < total - 1) nextScreen();
-      }, 3500);
-
-      /* Final animation */
-      function showFinalMagic() {
-        document.getElementById("finalCard").classList.add("show");
-        startConfetti();
-        releaseBalloons();
-        startSparkles();
-      }
-
-      /* Sparkles */
-      function startSparkles() {
-        const container = document.getElementById("sparkles");
-
-        setInterval(() => {
-          const sparkle = document.createElement("div");
-          sparkle.className = "sparkle";
-          sparkle.innerHTML = "✨";
-
-          sparkle.style.left = Math.random() * 100 + "vw";
-          sparkle.style.animationDuration = 3 + Math.random() * 3 + "s";
-
-          container.appendChild(sparkle);
-
-          setTimeout(() => sparkle.remove(), 6000);
-        }, 200);
-      }
-
-      /* Confetti */
-      function startConfetti() {
-        for (let i = 0; i < 60; i++) {
-          let c = document.createElement("div");
-          c.className = "confetti";
-          c.style.left = Math.random() * 100 + "vw";
-          c.style.background = `hsl(${Math.random() * 360},80%,60%)`;
-          c.style.animationDuration = 2 + Math.random() * 3 + "s";
-          document.body.appendChild(c);
-        }
-      }
-
-      /* Balloons */
-      function releaseBalloons() {
-        const container = document.getElementById("balloons");
-        const colors = ["#ffb6c1", "#ffd6cc", "#e6ccff", "#d4f5e9"];
-
-        for (let i = 0; i < 15; i++) {
-          let b = document.createElement("div");
-          b.className = "balloon";
-          b.style.left = Math.random() * 100 + "vw";
-          b.style.background =
-            colors[Math.floor(Math.random() * colors.length)];
-          b.style.animationDuration = 4 + Math.random() * 3 + "s";
-          container.appendChild(b);
-        }
-      }
-    </script>
-  </body>
+</body>
 </html>
