@@ -35,8 +35,14 @@
         overflow-x: hidden;
       }
 
+      /*
+        Scroll budget:
+          Slide 1 occupies 1.5 × VH  (longer dwell so the extra copy reads)
+          Slides 2-5 each occupy 1 × VH
+        Total scroller height = (1.5 + 4) × VH + 1 VH padding = 6.5 VH
+      */
       #scroller {
-        height: calc(5 * 100vh + 100vh);
+        height: calc(6.5 * var(--vh, 1vh) * 100);
         position: relative;
       }
 
@@ -164,6 +170,27 @@
         background: var(--rose);
         opacity: 0.5;
         margin: 13px 0;
+      }
+
+      /* ── SLIDE 1 BROTHER MESSAGE ── */
+      .brother-quote {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: clamp(15px, 4.5vw, 20px);
+        color: rgba(255, 255, 255, 0.72);
+        line-height: 1.7;
+        margin: 12px 0 6px;
+        border-left: 2px solid var(--rose);
+        padding-left: 14px;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+      }
+      .brother-sign {
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-top: 10px;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
       }
 
       /* ── PROGRESS DOTS ── */
@@ -442,7 +469,6 @@
         cursor: pointer;
       }
 
-      /* ✨ subtle glow pulse */
       .location-link::after {
         content: "";
         position: absolute;
@@ -455,7 +481,6 @@
         transform: translateX(-50%);
       }
 
-      /* hover / tap effect */
       .location-link:hover {
         opacity: 1;
         transform: translateY(-2px);
@@ -465,7 +490,6 @@
         width: 80%;
       }
 
-      /* 💫 gentle pulse (auto attention) */
       @keyframes linkPulse {
         0% {
           transform: scale(1);
@@ -481,12 +505,10 @@
         }
       }
 
-      /* apply pulse every few seconds */
       .location-link {
         animation: linkPulse 2.5s ease-in-out infinite;
       }
 
-      /* MINI MAP */
       .mini-map {
         margin-top: 10px;
         width: 100%;
@@ -507,26 +529,9 @@
         filter: grayscale(10%) contrast(1.05);
       }
 
-      /* ✨ subtle hover lift */
       .mini-map:hover {
         transform: scale(1.02);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      }
-
-      /* LOCATION LINK (if not already added) */
-      .location-link {
-        display: inline-block;
-        margin-top: 8px;
-        font-size: 13px;
-        opacity: 0.7;
-        text-decoration: none;
-        color: #fff;
-        transition: all 0.3s ease;
-      }
-
-      .location-link:hover {
-        opacity: 1;
-        transform: translateY(-2px);
       }
     </style>
   </head>
@@ -534,7 +539,7 @@
     <div class="petals-layer" id="petals"></div>
     <div class="balloon-layer" id="balloons"></div>
 
-    <audio id="music" loop  muted>
+    <audio id="music" loop muted>
       <source
         src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       />
@@ -543,7 +548,7 @@
 
     <div id="scroller">
       <div id="stage">
-        <!-- CARD 1 -->
+        <!-- CARD 1 — Brother's invitation -->
         <div class="card" id="c1">
           <img
             src="assets/zayan-1.webp"
@@ -554,16 +559,27 @@
           <div class="ov-t"></div>
           <div class="ov-b"></div>
           <div class="card-text">
-            <div class="tag">An intimate invitation</div>
+            <div class="tag">From her big brother</div>
             <h1 class="t-xl">
-              You're<br /><span class="gold italic">invited</span>
+              She's<br /><span class="gold italic">turning ONE</span>
             </h1>
-            <p class="body-text">To something soft, sweet, and full of love.</p>
+            <!-- <div class="deco-line"></div> -->
+            <!-- <p class="brother-quote">
+              My little sister turned our world into the sweetest kind of chaos
+              and love — now she’s turning one, and I’d love for you to
+              celebrate with us 💖
+            </p> -->
+            <p class="body-text">
+              My little sister turned our world into the sweetest kind of chaos
+              and love — now she’s turning one, and I’d love for you to
+              celebrate with us 💖
+            </p>
+            <p class="brother-sign">— Zayan, proud big brother</p>
           </div>
         </div>
 
         <!-- CARD 2 -->
-        <div class="card" id="c2">
+        <!-- <div class="card" id="c2">
           <img
             src="assets/zoya-1.webp"
             class="card-img"
@@ -579,6 +595,32 @@
             </h2>
             <div class="deco-line"></div>
             <p class="body-text">365 days of wonder, smiles, and magic.</p>
+          </div>
+        </div> -->
+
+        <div class="card" id="c2">
+          <img
+            src="assets/zoya-1.webp"
+            class="card-img"
+            style="object-position: center 30%"
+            alt=""
+          />
+          <div class="ov-t"></div>
+          <div class="ov-b"></div>
+
+          <div class="card-text">
+            <div class="tag">My first little year</div>
+
+            <h2 class="t-lg">
+              I’m turning<br /><span class="blush italic">one</span>
+            </h2>
+
+            <div class="deco-line"></div>
+
+            <p class="body-text">
+              One year of cuddles, giggles, and tiny dreams… now I’m ready to
+              celebrate my special day with you 💖
+            </p>
           </div>
         </div>
 
@@ -653,8 +695,6 @@
                 <div>
                   <div class="d-label">Venue</div>
                   <div class="d-val">Kakkanad<br /></div>
-
-                  <!-- 🗺️ MINI MAP -->
                   <div class="mini-map">
                     <iframe
                       src="https://www.google.com/maps?q=10.037943,76.349367&z=15&output=embed"
@@ -665,7 +705,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="c-footer">with love &amp; joy 💖</div>
             </div>
           </div>
@@ -692,31 +731,48 @@
 
     <script>
       /* ═══════════════════════════════════════════════════════════
-       DIRECTION-AWARE STACK ENGINE
+         SCROLL BUDGET (in VH units from top):
+           Slide 1 → 2  :  0      → 1.5 VH   (50% longer dwell)
+           Slide 2 → 3  :  1.5 VH → 2.5 VH
+           Slide 3 → 4  :  2.5 VH → 3.5 VH
+           Slide 4 → 5  :  3.5 VH → 4.5 VH
+         Total scroller  :  5.5 VH  (+1 VH padding = 6.5 VH)
+      ═══════════════════════════════════════════════════════════ */
 
-       Scrolling DOWN → next card rises up from BELOW   (+100% → 0)
-       Scrolling UP   → card retreats back DOWN          (0 → +100%)
-                        revealing the card underneath naturally
+      const VH = window.innerHeight;
 
-       Each card i owns scroll range: [ (i-1)*VH , i*VH ]
-       At progress=0 the card is off-screen below; at progress=1 it fully covers.
-       Going back reduces progress → card slides out the bottom — correct!
-    ═══════════════════════════════════════════════════════════ */
+      // Each card's ENTRY start scroll position and ENTRY span (in px)
+      // Card 1 is always visible at position 0; it never enters, it just sits.
+      // Card i (i >= 2) enters during [entryStart, entryStart + entrySpan].
+      const ENTRY = [
+        null, // c1 — always on screen
+        { start: 0, span: VH * 1.5 }, // c2 enters over 1.5 VH scroll (slow slide-1 exit)
+        { start: VH * 1.5, span: VH }, // c3
+        { start: VH * 2.5, span: VH }, // c4
+        { start: VH * 3.5, span: VH }, // c5
+      ];
+
+      // Dot thresholds: the scroll position at which a card is "active"
+      // (past 50% of its entry range)
+      const DOT_THRESH = [
+        0, // c1 active at scroll=0
+        VH * 0.75, // c2 active at scroll = midpoint of 0→1.5VH
+        VH * 2.0, // c3
+        VH * 3.0, // c4
+        VH * 4.0, // c5
+      ];
 
       const CARDS = [1, 2, 3, 4, 5].map((i) =>
         document.getElementById("c" + i),
       );
       const N = CARDS.length;
-      const VH = window.innerHeight;
 
-      // Higher index = higher z-layer so cards stack in order
+      // Higher index = higher z-layer
       CARDS.forEach((c, i) => (c.style.zIndex = i + 1));
 
       function clamp(v, a, b) {
         return Math.max(a, Math.min(b, v));
       }
-
-      // Smooth cubic ease-in-out
       function ease(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
@@ -727,24 +783,29 @@
       function positionCards(sy) {
         CARDS.forEach((card, i) => {
           if (i === 0) {
-            // Card 1 is always the base floor
             card.style.transform = "translateY(0)";
             return;
           }
-          // This card enters during scroll range (i-1)*VH → i*VH
-          const raw = clamp((sy - (i - 1) * VH) / VH, 0, 1);
+          const e = ENTRY[i];
+          const raw = clamp((sy - e.start) / e.span, 0, 1);
           const progress = ease(raw);
-          // 0% progress → 100% below screen; 100% progress → on screen
           card.style.transform = `translateY(${(1 - progress) * 100}%)`;
         });
+      }
+
+      function getActiveIdx(sy) {
+        let idx = 0;
+        for (let i = 1; i < N; i++) {
+          if (sy >= DOT_THRESH[i]) idx = i;
+        }
+        return idx;
       }
 
       function onScroll() {
         const sy = window.scrollY;
         positionCards(sy);
 
-        // Active dot = whichever card has progressed past 50% of its range
-        const idx = Math.min(Math.round(sy / VH), N - 1);
+        const idx = getActiveIdx(sy);
         if (idx !== currentActive) {
           document
             .querySelectorAll(".dot")
@@ -764,12 +825,10 @@
       positionCards(0);
 
       /* ═══════════════════════════════════════════════════════════
-         AUTO-SCROLL — smooth eased glide over a fixed duration
-         Uses performance.now() so the animation is time-based,
-         not frame-rate dependent. Feels like a native scroll snap.
+         AUTO-SCROLL — glides to the START of the next card's entry
       ═══════════════════════════════════════════════════════════ */
-      const IDLE_DELAY = 3000; // ms of no interaction before auto-scroll fires
-      const GLIDE_DUR = 4000; // ms for each slide transition (tweak to taste)
+      const IDLE_DELAY = 3000;
+      const GLIDE_DUR = 4500; // slightly longer for the wider slide-1 gap
 
       let idleTimer = null;
       let autoScrolling = false;
@@ -779,7 +838,18 @@
       const showInd = () => indicator.classList.add("visible");
       const hideInd = () => indicator.classList.remove("visible");
 
-      // Smooth ease-in-out curve for the glide
+      // Snap targets: the scroll position where each card is fully on screen
+      const SNAP = [
+        0,
+        VH * 1.5, // end of slide-1 entry = slide 2 fully in
+        VH * 2.5,
+        VH * 3.5,
+        VH * 4.5,
+      ];
+
+      // Per-slide auto-scroll durations (ms): [unused, 20000, 4500, 4500, 4500]
+      const GLIDE_DURATIONS = [0, 20000, 4500, 4500, 4500];
+
       function glideEase(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
@@ -788,29 +858,24 @@
         if (currentActive >= N - 1 || autoScrolling) return;
 
         const fromY = window.scrollY;
-        const toY = (currentActive + 1) * VH;
+        const toY = SNAP[currentActive + 1];
+        // Use 9000ms for slide 1 → 2, 4500ms for others
+        const glideDur = GLIDE_DURATIONS[currentActive + 1] || 4500;
         const startTs = performance.now();
         autoScrolling = true;
         showInd();
 
         function tick(now) {
           if (!autoScrolling) return;
-
           const elapsed = now - startTs;
-          const t = Math.min(elapsed / GLIDE_DUR, 1);
-          const eased = glideEase(t);
-          const nextY = fromY + (toY - fromY) * eased;
-
-          window.scrollTo(0, nextY);
-
+          const t = Math.min(elapsed / glideDur, 1);
+          window.scrollTo(0, fromY + (toY - fromY) * glideEase(t));
           if (t < 1) {
             autoRAF = requestAnimationFrame(tick);
           } else {
-            // Arrived cleanly
             window.scrollTo(0, toY);
             autoScrolling = false;
             hideInd();
-            // Wait, then auto-advance to next slide if there is one
             if (currentActive < N - 1) resetIdle();
           }
         }
@@ -829,27 +894,18 @@
         idleTimer = setTimeout(startAutoScroll, IDLE_DELAY);
       }
 
-      // Interrupt auto-scroll on any real user input
       let lastSY = window.scrollY;
-      window.addEventListener(
-        "scroll",
-        () => {
-          // Only treat as user-driven if NOT caused by our own scrollTo
-          if (autoScrolling) {
-            // The auto-scroll drives window.scrollTo itself, so let it run.
-            // But if the scroll delta is wildly off our expected path, the user grabbed it.
-            const delta = Math.abs(window.scrollY - lastSY);
-            if (delta > VH * 0.15) {
-              stopAutoScroll();
-              resetIdle();
-            }
-          } else {
+      window.addEventListener("scroll", () => {
+        if (autoScrolling) {
+          if (Math.abs(window.scrollY - lastSY) > VH * 0.15) {
+            stopAutoScroll();
             resetIdle();
           }
-          lastSY = window.scrollY;
-        },
-        { passive: true },
-      );
+        } else {
+          resetIdle();
+        }
+        lastSY = window.scrollY;
+      });
 
       ["wheel", "touchstart", "touchmove", "pointerdown"].forEach((ev) =>
         window.addEventListener(
@@ -870,11 +926,7 @@
         }
       });
 
-      // Always start at the top on refresh
-      window.addEventListener("beforeunload", () => {
-        window.scrollTo(0, 0);
-      });
-
+      window.addEventListener("beforeunload", () => window.scrollTo(0, 0));
       resetIdle();
 
       /* ═══════════════════════════════════════════════════════════
@@ -896,7 +948,7 @@
       setInterval(spawnPetal, 600);
 
       /* ═══════════════════════════════════════════════════════════
-         BALLOONS — fully rAF-driven, smooth sway & rise
+         BALLOONS
       ═══════════════════════════════════════════════════════════ */
       const BALLOON_COLORS = [
         { body: "#f2a0b0", shine: "#fce4ea" },
@@ -917,13 +969,13 @@
         const kx = cx,
           ky = cy + ry + 1.5;
         const sx = kx,
-          sy = ky + 5,
-          sh = h - sy - 4;
+          sy2 = ky + 5,
+          sh = h - sy2 - 4;
         return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
   <ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${col.body}" opacity="0.93"/>
   <ellipse cx="${cx - rx * 0.28}" cy="${cy - ry * 0.3}" rx="${rx * 0.21}" ry="${ry * 0.16}" fill="${col.shine}" opacity="0.68"/>
   <ellipse cx="${kx}" cy="${ky}" rx="3.4" ry="4.2" fill="${col.body}"/>
-  <path d="M${sx},${sy} C${sx + 11},${sy + sh * 0.22} ${sx - 9},${sy + sh * 0.48} ${sx + 7},${sy + sh * 0.72} S${sx - 3},${sy + sh}" stroke="${col.body}" stroke-width="1.3" fill="none" opacity="0.5"/>
+  <path d="M${sx},${sy2} C${sx + 11},${sy2 + sh * 0.22} ${sx - 9},${sy2 + sh * 0.48} ${sx + 7},${sy2 + sh * 0.72} S${sx - 3},${sy2 + sh}" stroke="${col.body}" stroke-width="1.3" fill="none" opacity="0.5"/>
 </svg>`;
       }
 
@@ -932,12 +984,12 @@
       function spawnBalloon(extraDelay) {
         const col =
           BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)];
-        const size = 44 + Math.random() * 34; // 44–78 px
-        const leftVW = 4 + Math.random() * 92; // 4–96 vw
-        const dur = 7500 + Math.random() * 5500; // 7.5–13 s
-        const sway = (Math.random() - 0.5) * 64; // ±32 px amplitude
-        const rotAmp = (Math.random() - 0.5) * 14; // ±7 deg
-        const swayFreq = 1.8 + Math.random() * 1.4; // sine cycles
+        const size = 44 + Math.random() * 34;
+        const leftVW = 4 + Math.random() * 92;
+        const dur = 7500 + Math.random() * 5500;
+        const sway = (Math.random() - 0.5) * 64;
+        const rotAmp = (Math.random() - 0.5) * 14;
+        const swayFreq = 1.8 + Math.random() * 1.4;
 
         const el = document.createElement("div");
         el.className = "balloon";
@@ -953,35 +1005,23 @@
             requestAnimationFrame(tick);
             return;
           }
-
           const t = Math.min(elapsed / dur, 1);
-
-          // Ease: accelerate gently, decelerate at top
           const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-
-          // Opacity envelope: fade in 0→8%, hold, fade out 88→100%
           const opacity = t < 0.08 ? t / 0.08 : t > 0.88 ? (1 - t) / 0.12 : 1;
-
           const riseVH = eased * 120;
           const swayX = sway * Math.sin(t * Math.PI * swayFreq);
           const rot = rotAmp * Math.sin(t * Math.PI * swayFreq + 0.4);
-
           el.style.opacity = opacity;
           el.style.transform = `translateY(-${riseVH}vh) translateX(${swayX}px) rotate(${rot}deg)`;
-
           if (t < 1) requestAnimationFrame(tick);
           else el.remove();
         }
-
         requestAnimationFrame(tick);
       }
 
       function startBalloons() {
-        // Opening burst: 10 balloons staggered over 2.5 s
         for (let i = 0; i < 10; i++) spawnBalloon(i * 250);
-        // Steady stream
         balloonIntv = setInterval(() => spawnBalloon(0), 1200);
-        // After 35 s wind down then final flourish
         setTimeout(() => {
           clearInterval(balloonIntv);
           for (let i = 0; i < 7; i++) spawnBalloon(i * 320);
@@ -989,16 +1029,13 @@
       }
 
       /* ═══════════════════════════════════════════════════════════
-         MUSIC — autoplay on load, fallback to first interaction
-         Browsers require a user gesture before audio can play.
-         We try immediately; if blocked we silently wait for the
-         first tap/click/key anywhere on the page, then start.
+         MUSIC
       ═══════════════════════════════════════════════════════════ */
       const musicBtn = document.getElementById("musicBtn");
       const music = document.getElementById("music");
       let playing = false;
 
-      music.volume = 0; // start silent, fade in so it's not jarring
+      music.volume = 0;
 
       function fadeIn(target, dur) {
         const step = target / (dur / 50);
@@ -1010,7 +1047,6 @@
 
       function startMusic() {
         if (playing) return;
-        // Unmute (was set to muted for autoplay policy compliance)
         music.muted = false;
         music.volume = 0;
         music
@@ -1021,26 +1057,19 @@
             fadeIn(0.85, 2000);
           })
           .catch(() => {
-            // Autoplay blocked — stay silent until user interacts
             music.muted = true;
           });
       }
 
-      // Try autoplay immediately
       startMusic();
 
-      // Fallback: play on first user interaction if autoplay was blocked
-      const unlockAudio = () => {
-        startMusic();
-      };
       ["click", "touchstart", "keydown", "pointerdown"].forEach((ev) =>
-        document.addEventListener(ev, unlockAudio, {
+        document.addEventListener(ev, startMusic, {
           once: true,
           passive: true,
         }),
       );
 
-      // Manual toggle button
       musicBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         if (playing) {
