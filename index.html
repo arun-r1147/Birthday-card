@@ -83,12 +83,13 @@
         bottom: 0;
         left: 0;
         right: 0;
-        height: 68%;
+        height: 75%;
         background: linear-gradient(
           to top,
-          rgb(0 0 0 / 93%) 0%,
-          rgb(10 4 7 / 63%) 45%,
-          #00000000 100%
+          rgba(10, 4, 7, 0.97) 0%,
+          rgba(10, 4, 7, 0.78) 35%,
+          rgba(10, 4, 7, 0.3) 65%,
+          transparent 100%
         );
       }
       .ov-t {
@@ -96,17 +97,17 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 26%;
+        height: 30%;
         background: linear-gradient(
           to bottom,
-          rgba(10, 4, 7, 0.5) 0%,
+          rgba(10, 4, 7, 0.65) 0%,
           transparent 100%
         );
       }
       .ov-f {
         position: absolute;
         inset: 0;
-        background: rgba(10, 4, 7, 0.35);
+        background: rgba(10, 4, 7, 0.45);
       }
 
       /* ── TEXT ── */
@@ -126,32 +127,32 @@
         padding-bottom: 0;
       }
 
-      .tag {
-        display: inline-block;
-        font-size: 10px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--rose);
-        margin-bottom: 11px;
-        opacity: 0.85;
-      }
       .t-xl {
         font-family: "Cormorant Garamond", serif;
-        font-weight: 300;
-        font-size: clamp(50px, 14vw, 82px);
+        font-weight: 500;
+        font-size: clamp(50px, 16vw, 82px);
         line-height: 1;
+        text-shadow:
+          0 2px 24px rgba(0, 0, 0, 0.7),
+          0 1px 4px rgba(0, 0, 0, 0.9);
       }
       .t-lg {
         font-family: "Cormorant Garamond", serif;
-        font-weight: 300;
-        font-size: clamp(38px, 11vw, 64px);
+        font-weight: 500;
+        font-size: clamp(38px, 20vw, 64px);
         line-height: 1.05;
+        text-shadow:
+          0 2px 24px rgba(0, 0, 0, 0.7),
+          0 1px 4px rgba(0, 0, 0, 0.9);
       }
       .t-md {
         font-family: "Cormorant Garamond", serif;
-        font-weight: 300;
-        font-size: clamp(28px, 8vw, 46px);
+        font-weight: 500;
+        font-size: clamp(28px, 10vw, 46px);
         line-height: 1.1;
+        text-shadow:
+          0 2px 24px rgba(0, 0, 0, 0.7),
+          0 1px 4px rgba(0, 0, 0, 0.9);
       }
       .italic {
         font-style: italic;
@@ -166,11 +167,22 @@
         color: var(--lilac);
       }
       .body-text {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 300;
-        color: rgba(255, 255, 255, 0.55);
+        color: rgba(255, 255, 255, 0.75);
         line-height: 1.75;
-        margin-top: 10px;
+        margin: 10px 0 5px 0;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+      }
+      .tag {
+        display: inline-block;
+        font-size: 14px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--rose);
+        margin-bottom: 11px;
+        opacity: 1;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
       }
       .deco-line {
         width: 36px;
@@ -183,7 +195,7 @@
       /* ── PROGRESS DOTS ── */
       #dots {
         position: fixed;
-        right: 16px;
+        right: 18px;
         top: 50%;
         transform: translateY(-50%);
         z-index: 200;
@@ -262,33 +274,33 @@
         border-radius: 24px;
         padding: 34px 24px 38px;
         text-align: center;
-        backdrop-filter: blur(22px);
-        -webkit-backdrop-filter: blur(22px);
+        /* backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px); */
       }
       .c-badge {
         display: inline-block;
-        font-size: 9px;
+        font-size: 10px;
         letter-spacing: 0.24em;
         text-transform: uppercase;
         color: var(--gold);
         border: 0.5px solid rgba(232, 201, 122, 0.35);
         border-radius: 40px;
-        padding: 5px 16px;
+        padding: 5px 18px;
         margin-bottom: 20px;
       }
       .c-name {
         font-family: "Cormorant Garamond", serif;
         font-size: clamp(54px, 16vw, 74px);
         font-weight: 300;
-        font-style: italic;
+        /* font-style: italic; */
         color: var(--blush);
         line-height: 1;
         margin-bottom: 3px;
       }
       .c-sub {
         font-family: "Cormorant Garamond", serif;
-        font-size: 16px;
-        font-style: italic;
+        font-size: 18px;
+        /* font-style: italic; */
         color: rgba(255, 255, 255, 0.4);
         margin-bottom: 24px;
       }
@@ -320,11 +332,11 @@
         font-size: 9px;
         letter-spacing: 0.15em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.33);
+        color: rgba(255, 255, 255, 0.80);
         margin-bottom: 2px;
       }
       .d-val {
-        font-family: "Cormorant Garamond", serif;
+        /* font-family: "Cormorant Garamond", serif; */
         font-size: 18px;
         color: rgba(255, 255, 255, 0.88);
         line-height: 1.25;
@@ -332,9 +344,9 @@
       .c-footer {
         margin-top: 24px;
         font-family: "Cormorant Garamond", serif;
-        font-size: 15px;
-        font-style: italic;
-        color: rgba(255, 255, 255, 0.35);
+        font-size: 18px;
+        /* font-style: italic; */
+        color: rgba(255, 255, 255, 0.80);
       }
 
       /* ── PETALS ── */
@@ -431,7 +443,7 @@
         <!-- CARD 1 — COVER -->
         <div class="card" id="c1">
           <img
-            src="assets/zoya-9.webp"
+            src="assets/zoya-1.webp"
             class="card-img"
             style="object-position: center 20%"
             alt=""
@@ -450,7 +462,7 @@
         <!-- CARD 2 -->
         <div class="card" id="c2">
           <img
-            src="assets/zoya-10.webp"
+            src="assets/zoya-2.webp"
             class="card-img"
             style="object-position: center 30%"
             alt=""
@@ -470,28 +482,24 @@
         <!-- CARD 3 -->
         <div class="card" id="c3">
           <img
-            src="assets/zoya-3.jpg"
+            src="assets/zoya-3.webp"
             class="card-img"
             style="object-position: center 40%"
             alt=""
           />
-          <div class="ov-f"></div>
+          <div class="ov-t"></div>
           <div class="ov-b"></div>
-          <div class="card-text mid">
-            <div class="tag" style="display: block; text-align: center">
-              Our little sunshine
-            </div>
-            <h2 class="t-lg italic blush" style="text-align: center">Zoya</h2>
-            <p class="body-text" style="text-align: center">
-              She lights up every room she enters.
-            </p>
+          <div class="card-text">
+            <div class="tag">Our little sunshine</div>
+            <h2 class="t-lg italic blush">Zoya</h2>
+            <p class="body-text">She lights up every room she enters.</p>
           </div>
         </div>
 
         <!-- CARD 4 -->
         <div class="card" id="c4">
           <img
-            src="assets/zoya-7.webp"
+            src="assets/zoya-4.webp"
             class="card-img"
             style="object-position: center 15%"
             alt=""
@@ -512,7 +520,7 @@
         <!-- CARD 5 — INVITE -->
         <div class="card" id="c5">
           <img
-            src="assets/zoya-4.webp"
+            src="assets/zoya-5.webp"
             class="card-img"
             style="object-position: center 50%"
             alt=""
@@ -520,7 +528,7 @@
           <div class="card-inner">
             <div class="invite-card" id="inviteCard">
               <div class="c-badge">Birthday Celebration</div>
-              <div class="c-name">Zoya</div>
+              <div class="c-name">ZOYA</div>
               <div class="c-sub">is turning one</div>
               <div class="c-div"></div>
               <div class="d-row">
