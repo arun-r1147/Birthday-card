@@ -769,7 +769,7 @@
          not frame-rate dependent. Feels like a native scroll snap.
       ═══════════════════════════════════════════════════════════ */
       const IDLE_DELAY = 3000; // ms of no interaction before auto-scroll fires
-      const GLIDE_DUR = 900; // ms for each slide transition (tweak to taste)
+      const GLIDE_DUR = 4000; // ms for each slide transition (tweak to taste)
 
       let idleTimer = null;
       let autoScrolling = false;
@@ -868,6 +868,11 @@
           stopAutoScroll();
           resetIdle();
         }
+      });
+
+      // Always start at the top on refresh
+      window.addEventListener("beforeunload", () => {
+        window.scrollTo(0, 0);
       });
 
       resetIdle();
