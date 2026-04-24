@@ -8,156 +8,183 @@
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body { margin:0; overflow:hidden; font-family:'Poppins',sans-serif; }
-
-/* STORY BARS */
-.story-bars {
-  position: fixed;
-  top: 10px; left: 10px; right: 10px;
-  display: flex; gap: 5px; z-index: 10;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
 }
-.bar { flex:1; height:4px; background:rgba(255,255,255,0.3); border-radius:5px; overflow:hidden; }
-.progress { height:100%; width:0%; background:white; }
 
-/* Screens */
+/* SCREENS */
 .screen {
-  position:absolute; width:100%; height:100vh;
-  opacity:0; transition:opacity 1s ease;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
-.screen.active { opacity:1; z-index:1; }
+.screen.active {
+  opacity: 1;
+  z-index: 1;
+}
 
-/* Background */
+/* BACKGROUND */
 .bg-img {
-  position:absolute; width:100%; height:100%;
-  object-fit:cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   animation: zoom 12s ease-in-out infinite alternate;
 }
 .overlay {
-  position:absolute; width:100%; height:100%;
-  background:linear-gradient(to top, rgba(255,182,193,0.6), transparent);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(255,182,193,0.5), transparent);
 }
 
-/* Content */
+/* CONTENT */
 .content {
-  position:relative; z-index:2;
-  height:100%;
-  display:flex; flex-direction:column;
-  justify-content:center; align-items:center;
-  text-align:center;
-  padding:20px;
-  color:white;
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: white;
+  padding: 20px;
 }
 
-/* Typography */
-h1 { font-family:'Pacifico'; font-size:clamp(26px,7vw,40px); }
-p { font-size:clamp(14px,4vw,18px); }
-.name { font-family:'Pacifico'; font-size:clamp(32px,8vw,48px); color:#ff69b4; }
+/* TEXT */
+h1 {
+  font-family: 'Pacifico';
+  font-size: clamp(26px,7vw,40px);
+}
+p {
+  font-size: clamp(14px,4vw,18px);
+}
+.name {
+  font-family: 'Pacifico';
+  font-size: clamp(32px,8vw,48px);
+  color: #ff69b4;
+}
 
-/* Card */
+/* FINAL CARD */
 .card {
-  background:white; color:#444;
-  padding:20px; border-radius:20px;
+  background: white;
+  color: #444;
+  padding: 20px;
+  border-radius: 20px;
 }
-
-/* Final reveal */
 .magic-text {
-  font-family:'Pacifico';
-  font-size:clamp(26px,7vw,40px);
-  margin-bottom:20px;
+  font-family: 'Pacifico';
+  font-size: clamp(26px,7vw,40px);
+  margin-bottom: 20px;
   animation: glow 2s infinite alternate;
 }
 @keyframes glow {
-  from { text-shadow:0 0 10px #fff; }
-  to { text-shadow:0 0 25px #ffb6c1; }
+  from { text-shadow: 0 0 10px #fff; }
+  to { text-shadow: 0 0 25px #ffb6c1; }
 }
-
 .final-card {
-  opacity:0;
-  transform:scale(0.7);
-  transition:1s ease;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: 1s ease;
 }
 .final-card.show {
-  opacity:1;
-  transform:scale(1);
+  opacity: 1;
+  transform: scale(1);
 }
 
-/* Sparkles */
+/* SPARKLES */
 .global-sparkles {
-  position:fixed; width:100%; height:100%;
-  pointer-events:none; z-index:0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
 }
 .sparkle {
-  position:absolute;
-  font-size:10px;
-  animation:sparkleFloat linear infinite;
+  position: absolute;
+  font-size: 14px;
+  animation: sparkleFloat ease-in-out forwards;
 }
 @keyframes sparkleFloat {
-  0% { transform:translateY(0); opacity:0; }
-  50% { opacity:0.8; }
-  100% { transform:translateY(-100vh); opacity:0; }
+  0% { transform: translateY(20px) scale(0.6); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
 }
 
-/* Confetti */
+/* 🎬 CONFETTI BURST */
 .confetti {
-  position:absolute;
-  width:8px; height:8px;
-  top:-10px;
-  animation:fall linear infinite;
+  position: fixed;
+  width: 8px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  z-index: 20;
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+  animation: confettiBurst 1s ease-out forwards,
+             confettiFall 3s linear forwards;
 }
-@keyframes fall {
-  to { transform:translateY(100vh) rotate(360deg); }
+@keyframes confettiBurst {
+  0% { transform: translate(-50%, -50%) scale(0.5); }
+  100% { transform: translate(var(--x), var(--y)) scale(1); }
+}
+@keyframes confettiFall {
+  0% { transform: translate(var(--x), var(--y)) rotate(0deg); }
+  100% { transform: translate(calc(var(--x) * 1.2), 100vh) rotate(720deg); }
 }
 
-/* Balloons */
+/* BALLOONS */
 .balloon-container {
-  position:absolute; width:100%; height:100%;
-  pointer-events:none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 .balloon {
-  position:absolute;
-  bottom:-100px;
-  width:40px; height:50px;
-  border-radius:50%;
-  animation:rise 6s linear forwards;
+  position: absolute;
+  bottom: -100px;
+  width: 40px;
+  height: 50px;
+  border-radius: 50%;
+  animation: rise 6s linear forwards;
 }
 .balloon::after {
-  content:'';
-  position:absolute;
-  width:2px; height:40px;
-  background:#ccc;
-  top:50px; left:50%;
+  content: '';
+  width: 2px;
+  height: 40px;
+  background: #ccc;
+  position: absolute;
+  top: 50px;
+  left: 50%;
 }
 @keyframes rise {
-  to { transform:translateY(-120vh); }
+  to { transform: translateY(-120vh); }
 }
 
-/* Animations */
+/* ANIMATIONS */
 @keyframes zoom {
-  from { transform:scale(1); }
-  to { transform:scale(1.1); }
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- STORY BARS -->
-<div class="story-bars">
-  <div class="bar"><div class="progress" id="p0"></div></div>
-  <div class="bar"><div class="progress" id="p1"></div></div>
-  <div class="bar"><div class="progress" id="p2"></div></div>
-  <div class="bar"><div class="progress" id="p3"></div></div>
-  <div class="bar"><div class="progress" id="p4"></div></div>
-</div>
-
-<!-- GLOBAL SPARKLES -->
 <div class="global-sparkles" id="globalSparkles"></div>
 
 <audio id="music" loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
-<!-- Slides -->
+<!-- SLIDES -->
 <div class="screen active" id="s0">
   <img src="https://picsum.photos/1080/1920?1" class="bg-img">
   <div class="overlay"></div>
@@ -213,84 +240,93 @@ p { font-size:clamp(14px,4vw,18px); }
 </div>
 
 <script>
-let current=0, total=5, duration=3500;
-let progressInterval;
+let current = 0;
+const total = 5;
+const duration = 3500;
 
 /* MUSIC */
-document.body.addEventListener("click",()=> {
+document.body.addEventListener("click", () => {
   document.getElementById("music").play();
-},{once:true});
-
-/* PROGRESS */
-function startProgress(i){
-  clearInterval(progressInterval);
-  let bar=document.getElementById("p"+i);
-  let w=0;
-  progressInterval=setInterval(()=>{
-    w+=100/(duration/50);
-    bar.style.width=w+"%";
-    if(w>=100) clearInterval(progressInterval);
-  },50);
-}
+}, { once: true });
 
 /* SLIDES */
-function nextScreen(){
-  document.getElementById("s"+current).classList.remove("active");
+function nextScreen() {
+  document.getElementById("s" + current).classList.remove("active");
   current++;
-  if(current<total){
-    document.getElementById("s"+current).classList.add("active");
-    startProgress(current);
+
+  if (current < total) {
+    document.getElementById("s" + current).classList.add("active");
   }
-  if(current===4){
-    setTimeout(showFinalMagic,1200);
+
+  if (current === 4) {
+    setTimeout(showFinalMagic, 1200);
   }
 }
-setInterval(()=>{ if(current<total-1) nextScreen(); },duration);
 
-/* FINAL */
-function showFinalMagic(){
+setInterval(() => {
+  if (current < total - 1) nextScreen();
+}, duration);
+
+/* FINAL MAGIC */
+function showFinalMagic() {
   document.getElementById("finalCard").classList.add("show");
-  startConfetti();
+  setTimeout(startConfetti, 300);
+  setTimeout(startConfetti, 900);
   releaseBalloons();
 }
 
 /* SPARKLES */
-setInterval(()=>{
-  let s=document.createElement("div");
-  s.className="sparkle";
-  s.innerHTML="✨";
-  s.style.left=Math.random()*100+"vw";
-  s.style.animationDuration=(4+Math.random()*4)+"s";
-  document.getElementById("globalSparkles").appendChild(s);
-  setTimeout(()=>s.remove(),8000);
-},400);
+setInterval(() => {
+  const s = document.createElement("div");
+  s.className = "sparkle";
+  s.innerHTML = Math.random() > 0.5 ? "✨" : "💖";
 
-/* CONFETTI */
-function startConfetti(){
-  for(let i=0;i<60;i++){
-    let c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=`hsl(${Math.random()*360},80%,60%)`;
-    c.style.animationDuration=(2+Math.random()*3)+"s";
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.animationDuration = (5 + Math.random() * 3) + "s";
+
+  document.getElementById("globalSparkles").appendChild(s);
+
+  setTimeout(() => s.remove(), 8000);
+}, 300);
+
+/* 🎬 CONFETTI BURST */
+function startConfetti() {
+  const count = 100;
+
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = 200 + Math.random() * 300;
+
+    const x = Math.cos(angle) * radius + "px";
+    const y = Math.sin(angle) * radius + "px";
+
+    c.style.setProperty('--x', x);
+    c.style.setProperty('--y', y);
+    c.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+
     document.body.appendChild(c);
+
+    setTimeout(() => c.remove(), 4000);
   }
 }
 
 /* BALLOONS */
-function releaseBalloons(){
-  let colors=["#ffb6c1","#ffd6cc","#e6ccff","#d4f5e9"];
-  for(let i=0;i<15;i++){
-    let b=document.createElement("div");
-    b.className="balloon";
-    b.style.left=Math.random()*100+"vw";
-    b.style.background=colors[Math.floor(Math.random()*colors.length)];
+function releaseBalloons() {
+  const colors = ["#ffb6c1","#ffd6cc","#e6ccff","#d4f5e9"];
+
+  for (let i = 0; i < 15; i++) {
+    let b = document.createElement("div");
+    b.className = "balloon";
+
+    b.style.left = Math.random() * 100 + "vw";
+    b.style.background = colors[Math.floor(Math.random() * colors.length)];
+
     document.getElementById("balloons").appendChild(b);
   }
 }
-
-/* INIT */
-startProgress(0);
 </script>
 
 </body>
