@@ -35,18 +35,11 @@
         overflow-x: hidden;
       }
 
-      /* ── SCROLL CONTAINER ──
-   Total height = number of slides × scroll-per-slide
-   Each slide gets 100vh of scroll distance to "complete" its stack-up
-*/
       #scroller {
-        height: calc(
-          5 * 100vh + 100vh
-        ); /* 5 slides × 100vh trigger + final resting */
+        height: calc(5 * 100vh + 100vh);
         position: relative;
       }
 
-      /* ── STACK STAGE ── fixed viewport */
       #stage {
         position: fixed;
         inset: 0;
@@ -55,19 +48,15 @@
         overflow: hidden;
       }
 
-      /* ── EACH CARD ── */
       .card {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
         will-change: transform;
-        border-radius: 0;
         overflow: hidden;
-        /* Cards sit stacked; JS drives translateY */
       }
 
-      /* Images */
       .card-img {
         position: absolute;
         inset: 0;
@@ -77,7 +66,6 @@
         object-position: center top;
       }
 
-      /* Overlays */
       .ov-b {
         position: absolute;
         bottom: 0;
@@ -104,13 +92,7 @@
           transparent 100%
         );
       }
-      .ov-f {
-        position: absolute;
-        inset: 0;
-        background: rgba(10, 4, 7, 0.45);
-      }
 
-      /* ── TEXT ── */
       .card-text {
         position: absolute;
         z-index: 10;
@@ -118,13 +100,6 @@
         left: 0;
         right: 0;
         padding: 0 28px 56px;
-      }
-      .card-text.mid {
-        bottom: auto;
-        top: 50%;
-        transform: translateY(-50%);
-        text-align: center;
-        padding-bottom: 0;
       }
 
       .t-xl {
@@ -181,7 +156,6 @@
         text-transform: uppercase;
         color: var(--rose);
         margin-bottom: 11px;
-        opacity: 1;
         text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
       }
       .deco-line {
@@ -253,7 +227,54 @@
         }
       }
 
-      /* ── INVITE CARD (last slide) ── */
+      /* ── AUTO-SCROLL INDICATOR ── */
+      #autoScrollIndicator {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 201;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 0.5px solid rgba(255, 255, 255, 0.18);
+        border-radius: 40px;
+        padding: 7px 16px;
+        opacity: 0;
+        transition: opacity 0.5s;
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+      }
+      #autoScrollIndicator.visible {
+        opacity: 1;
+      }
+      #autoScrollIndicator span {
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .asi-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--rose);
+        animation: pulse-dot 1.2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.6);
+          opacity: 0.5;
+        }
+      }
+
+      /* ── INVITE CARD ── */
       #c5 .card-img {
         filter: brightness(0.28) saturate(1.4);
       }
@@ -274,8 +295,6 @@
         border-radius: 24px;
         padding: 34px 24px 38px;
         text-align: center;
-        /* backdrop-filter: blur(22px);
-        -webkit-backdrop-filter: blur(22px); */
       }
       .c-badge {
         display: inline-block;
@@ -292,7 +311,6 @@
         font-family: "Cormorant Garamond", serif;
         font-size: clamp(54px, 16vw, 74px);
         font-weight: 300;
-        /* font-style: italic; */
         color: var(--blush);
         line-height: 1;
         margin-bottom: 3px;
@@ -300,7 +318,6 @@
       .c-sub {
         font-family: "Cormorant Garamond", serif;
         font-size: 18px;
-        /* font-style: italic; */
         color: rgba(255, 255, 255, 0.4);
         margin-bottom: 24px;
       }
@@ -332,11 +349,10 @@
         font-size: 9px;
         letter-spacing: 0.15em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.80);
+        color: rgba(255, 255, 255, 0.8);
         margin-bottom: 2px;
       }
       .d-val {
-        /* font-family: "Cormorant Garamond", serif; */
         font-size: 18px;
         color: rgba(255, 255, 255, 0.88);
         line-height: 1.25;
@@ -345,8 +361,7 @@
         margin-top: 24px;
         font-family: "Cormorant Garamond", serif;
         font-size: 18px;
-        /* font-style: italic; */
-        color: rgba(255, 255, 255, 0.80);
+        color: rgba(255, 255, 255, 0.8);
       }
 
       /* ── PETALS ── */
@@ -380,29 +395,17 @@
         }
       }
 
-      /* ── CONFETTI ── */
-      .cp {
+      /* ── BALLOONS ── */
+      .balloon-layer {
         position: fixed;
-        width: 7px;
-        height: 11px;
-        top: -10px;
-        border-radius: 2px;
-        z-index: 300;
+        inset: 0;
         pointer-events: none;
-        animation: cf linear forwards;
+        z-index: 150;
+        overflow: hidden;
       }
-      @keyframes cf {
-        0% {
-          transform: translateY(0) rotate(0deg);
-          opacity: 1;
-        }
-        85% {
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(108vh) rotate(720deg);
-          opacity: 0;
-        }
+      .balloon {
+        position: absolute;
+        bottom: -140px;
       }
 
       /* ── MUSIC ── */
@@ -427,11 +430,68 @@
       .music-btn:hover {
         background: rgba(255, 255, 255, 0.17);
       }
+
+      .location-link {
+        font-size: 14px;
+        opacity: 0.65;
+        text-decoration: none;
+        color: #fff;
+        display: inline-block;
+        position: relative;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      /* ✨ subtle glow pulse */
+      .location-link::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -3px;
+        width: 0%;
+        height: 1px;
+        background: #f2a0b0;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      /* hover / tap effect */
+      .location-link:hover {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .location-link:hover::after {
+        width: 80%;
+      }
+
+      /* 💫 gentle pulse (auto attention) */
+      @keyframes linkPulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.65;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.65;
+        }
+      }
+
+      /* apply pulse every few seconds */
+      .location-link {
+        animation: linkPulse 2.5s ease-in-out infinite;
+      }
     </style>
   </head>
   <body>
     <div class="petals-layer" id="petals"></div>
-    <audio id="music" loop>
+    <div class="balloon-layer" id="balloons"></div>
+
+    <audio id="music" loop autoplay muted>
       <source
         src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       />
@@ -440,7 +500,7 @@
 
     <div id="scroller">
       <div id="stage">
-        <!-- CARD 1 — COVER -->
+        <!-- CARD 1 -->
         <div class="card" id="c1">
           <img
             src="assets/zoya-1.webp"
@@ -526,7 +586,7 @@
             alt=""
           />
           <div class="card-inner">
-            <div class="invite-card" id="inviteCard">
+            <div class="invite-card">
               <div class="c-badge">Birthday Celebration</div>
               <div class="c-name">ZOYA</div>
               <div class="c-sub">is turning one</div>
@@ -535,14 +595,14 @@
                 <div class="d-icon">📅</div>
                 <div>
                   <div class="d-label">Date</div>
-                  <div class="d-val">10th May, 2025</div>
+                  <div class="d-val">3rd May, 2025</div>
                 </div>
               </div>
               <div class="d-row">
                 <div class="d-icon">⏰</div>
                 <div>
                   <div class="d-label">Time</div>
-                  <div class="d-val">5:00 PM onwards</div>
+                  <div class="d-val">11:00 AM onwards</div>
                 </div>
               </div>
               <div class="d-row">
@@ -550,10 +610,13 @@
                 <div>
                   <div class="d-label">Venue</div>
                   <div class="d-val">
-                    Your Venue Name<br /><span
-                      style="font-size: 14px; opacity: 0.55"
-                      >City, State</span
+                    Kakkanad<br /><a
+                      href="https://www.google.com/maps/@10.037943,76.349367,19.25z?entry=ttu&g_ep=EgoyMDI2MDQyMS4wIKXMDSoASAFQAw%3D%3D"
+                      target="_blank"
+                      class="location-link"
                     >
+                      📌 Location Details
+                    </a>
                   </div>
                 </div>
               </div>
@@ -562,11 +625,8 @@
           </div>
         </div>
       </div>
-      <!-- /stage -->
     </div>
-    <!-- /scroller -->
 
-    <!-- Dots -->
     <div id="dots">
       <div class="dot active"></div>
       <div class="dot"></div>
@@ -575,91 +635,200 @@
       <div class="dot"></div>
     </div>
 
-    <!-- Scroll hint -->
     <div id="scrollHint">
       <span>scroll</span>
       <div class="sh-bar"></div>
     </div>
+    <div id="autoScrollIndicator">
+      <div class="asi-dot"></div>
+      <span>auto scrolling</span>
+    </div>
 
     <script>
-      /* ── STICKY STACK ENGINE ──
-   Cards are absolutely positioned in a fixed stage.
-   Card 1 sits at translateY(0) — always the base.
-   Cards 2–5 start at translateY(100%) (below viewport).
-   As the user scrolls into each card's "slot", it slides up to translateY(0).
-   Previous cards stay pinned at 0 underneath (covered by newer ones).
-   Each card gets SCROLL_PER_CARD px of scroll distance to animate.
-*/
+      /* ═══════════════════════════════════════════════════════════
+       DIRECTION-AWARE STACK ENGINE
 
-      const CARDS = [
-        document.getElementById("c1"),
-        document.getElementById("c2"),
-        document.getElementById("c3"),
-        document.getElementById("c4"),
-        document.getElementById("c5"),
-      ];
+       Scrolling DOWN → next card rises up from BELOW   (+100% → 0)
+       Scrolling UP   → card retreats back DOWN          (0 → +100%)
+                        revealing the card underneath naturally
+
+       Each card i owns scroll range: [ (i-1)*VH , i*VH ]
+       At progress=0 the card is off-screen below; at progress=1 it fully covers.
+       Going back reduces progress → card slides out the bottom — correct!
+    ═══════════════════════════════════════════════════════════ */
+
+      const CARDS = [1, 2, 3, 4, 5].map((i) =>
+        document.getElementById("c" + i),
+      );
       const N = CARDS.length;
-      const SCROLL_PER_CARD = window.innerHeight; // 1 × vh per card
+      const VH = window.innerHeight;
 
-      // Card 1 is base — always at 0
-      // Cards 2–N start off-screen below
-      CARDS.forEach((c, i) => {
-        c.style.transform = i === 0 ? "translateY(0)" : "translateY(100%)";
-        c.style.zIndex = i + 1; // higher cards sit on top
-      });
+      // Higher index = higher z-layer so cards stack in order
+      CARDS.forEach((c, i) => (c.style.zIndex = i + 1));
 
       function clamp(v, a, b) {
         return Math.max(a, Math.min(b, v));
       }
-      function easeOut(t) {
-        return 1 - Math.pow(1 - t, 3);
+
+      // Smooth cubic ease-in-out
+      function ease(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
 
       let currentActive = 0;
-      let confettiDone = false;
+      let balloonsDone = false;
+
+      function positionCards(sy) {
+        CARDS.forEach((card, i) => {
+          if (i === 0) {
+            // Card 1 is always the base floor
+            card.style.transform = "translateY(0)";
+            return;
+          }
+          // This card enters during scroll range (i-1)*VH → i*VH
+          const raw = clamp((sy - (i - 1) * VH) / VH, 0, 1);
+          const progress = ease(raw);
+          // 0% progress → 100% below screen; 100% progress → on screen
+          card.style.transform = `translateY(${(1 - progress) * 100}%)`;
+        });
+      }
 
       function onScroll() {
         const sy = window.scrollY;
+        positionCards(sy);
 
-        CARDS.forEach((card, i) => {
-          if (i === 0) return; // base card never moves
-
-          // This card animates during scroll range: (i-1)*SCROLL_PER_CARD → i*SCROLL_PER_CARD
-          const start = (i - 1) * SCROLL_PER_CARD;
-          const end = i * SCROLL_PER_CARD;
-
-          const raw = clamp((sy - start) / (end - start), 0, 1);
-          const progress = easeOut(raw);
-
-          // translateY goes from 100% → 0%
-          const ty = (1 - progress) * 100;
-          card.style.transform = `translateY(${ty}%)`;
-        });
-
-        // Active dot
-        const slideIndex = Math.min(Math.floor(sy / SCROLL_PER_CARD), N - 1);
-        if (slideIndex !== currentActive) {
+        // Active dot = whichever card has progressed past 50% of its range
+        const idx = Math.min(Math.round(sy / VH), N - 1);
+        if (idx !== currentActive) {
           document
             .querySelectorAll(".dot")
-            .forEach((d, i) => d.classList.toggle("active", i === slideIndex));
-          currentActive = slideIndex;
-
-          // Confetti when last card arrives
-          if (slideIndex === N - 1 && !confettiDone) {
-            confettiDone = true;
-            setTimeout(launchConfetti, 400);
+            .forEach((d, i) => d.classList.toggle("active", i === idx));
+          currentActive = idx;
+          if (idx === N - 1 && !balloonsDone) {
+            balloonsDone = true;
+            startBalloons();
           }
         }
 
-        // Scroll hint
         document.getElementById("scrollHint").style.opacity =
           sy > 40 ? "0" : "0.45";
       }
 
       window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
+      positionCards(0);
 
-      /* ── PETALS ── */
+      /* ═══════════════════════════════════════════════════════════
+         AUTO-SCROLL — smooth eased glide over a fixed duration
+         Uses performance.now() so the animation is time-based,
+         not frame-rate dependent. Feels like a native scroll snap.
+      ═══════════════════════════════════════════════════════════ */
+      const IDLE_DELAY = 3000; // ms of no interaction before auto-scroll fires
+      const GLIDE_DUR = 900; // ms for each slide transition (tweak to taste)
+
+      let idleTimer = null;
+      let autoScrolling = false;
+      let autoRAF = null;
+
+      const indicator = document.getElementById("autoScrollIndicator");
+      const showInd = () => indicator.classList.add("visible");
+      const hideInd = () => indicator.classList.remove("visible");
+
+      // Smooth ease-in-out curve for the glide
+      function glideEase(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+
+      function startAutoScroll() {
+        if (currentActive >= N - 1 || autoScrolling) return;
+
+        const fromY = window.scrollY;
+        const toY = (currentActive + 1) * VH;
+        const startTs = performance.now();
+        autoScrolling = true;
+        showInd();
+
+        function tick(now) {
+          if (!autoScrolling) return;
+
+          const elapsed = now - startTs;
+          const t = Math.min(elapsed / GLIDE_DUR, 1);
+          const eased = glideEase(t);
+          const nextY = fromY + (toY - fromY) * eased;
+
+          window.scrollTo(0, nextY);
+
+          if (t < 1) {
+            autoRAF = requestAnimationFrame(tick);
+          } else {
+            // Arrived cleanly
+            window.scrollTo(0, toY);
+            autoScrolling = false;
+            hideInd();
+            // Wait, then auto-advance to next slide if there is one
+            if (currentActive < N - 1) resetIdle();
+          }
+        }
+
+        autoRAF = requestAnimationFrame(tick);
+      }
+
+      function stopAutoScroll() {
+        if (autoRAF) cancelAnimationFrame(autoRAF);
+        autoScrolling = false;
+        hideInd();
+      }
+
+      function resetIdle() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(startAutoScroll, IDLE_DELAY);
+      }
+
+      // Interrupt auto-scroll on any real user input
+      let lastSY = window.scrollY;
+      window.addEventListener(
+        "scroll",
+        () => {
+          // Only treat as user-driven if NOT caused by our own scrollTo
+          if (autoScrolling) {
+            // The auto-scroll drives window.scrollTo itself, so let it run.
+            // But if the scroll delta is wildly off our expected path, the user grabbed it.
+            const delta = Math.abs(window.scrollY - lastSY);
+            if (delta > VH * 0.15) {
+              stopAutoScroll();
+              resetIdle();
+            }
+          } else {
+            resetIdle();
+          }
+          lastSY = window.scrollY;
+        },
+        { passive: true },
+      );
+
+      ["wheel", "touchstart", "touchmove", "pointerdown"].forEach((ev) =>
+        window.addEventListener(
+          ev,
+          () => {
+            stopAutoScroll();
+            resetIdle();
+          },
+          { passive: true },
+        ),
+      );
+      window.addEventListener("keydown", (e) => {
+        if (
+          [" ", "ArrowDown", "ArrowUp", "PageDown", "PageUp"].includes(e.key)
+        ) {
+          stopAutoScroll();
+          resetIdle();
+        }
+      });
+
+      resetIdle();
+
+      /* ═══════════════════════════════════════════════════════════
+         PETALS
+      ═══════════════════════════════════════════════════════════ */
       const petalEmoji = ["🌸", "🌺", "✨", "💮", "🩷", "💫", "⭐"];
       function spawnPetal() {
         const p = document.createElement("div");
@@ -675,61 +844,166 @@
       }
       setInterval(spawnPetal, 700);
 
-      /* ── CONFETTI ── */
-      function launchConfetti() {
-        const cols = [
-          "#f2a0b0",
-          "#ddc8f0",
-          "#e8c97a",
-          "#f9d4dc",
-          "#b8e8f8",
-          "#a8f0d0",
-          "#fff",
-        ];
-        for (let i = 0; i < 100; i++) {
-          setTimeout(() => {
-            const c = document.createElement("div");
-            c.className = "cp";
-            c.style.left = Math.random() * 100 + "vw";
-            c.style.background = cols[Math.floor(Math.random() * cols.length)];
-            c.style.animationDuration = 2.5 + Math.random() * 2.5 + "s";
-            c.style.transform = `rotate(${Math.random() * 360}deg)`;
-            document.body.appendChild(c);
-            setTimeout(() => c.remove(), 6000);
-          }, i * 25);
-        }
+      /* ═══════════════════════════════════════════════════════════
+         BALLOONS — fully rAF-driven, smooth sway & rise
+      ═══════════════════════════════════════════════════════════ */
+      const BALLOON_COLORS = [
+        { body: "#f2a0b0", shine: "#fce4ea" },
+        { body: "#ddc8f0", shine: "#ede0f8" },
+        { body: "#e8c97a", shine: "#f5e4a8" },
+        { body: "#b8e8f8", shine: "#d8f4fd" },
+        { body: "#f9d4dc", shine: "#fde9ed" },
+        { body: "#a8f0d0", shine: "#c8f7e6" },
+      ];
+
+      function makeBalloonSVG(col, size) {
+        const w = size,
+          h = size * 1.45;
+        const cx = w / 2,
+          cy = h * 0.37;
+        const rx = w * 0.43,
+          ry = h * 0.37;
+        const kx = cx,
+          ky = cy + ry + 1.5;
+        const sx = kx,
+          sy = ky + 5,
+          sh = h - sy - 4;
+        return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${col.body}" opacity="0.93"/>
+  <ellipse cx="${cx - rx * 0.28}" cy="${cy - ry * 0.3}" rx="${rx * 0.21}" ry="${ry * 0.16}" fill="${col.shine}" opacity="0.68"/>
+  <ellipse cx="${kx}" cy="${ky}" rx="3.4" ry="4.2" fill="${col.body}"/>
+  <path d="M${sx},${sy} C${sx + 11},${sy + sh * 0.22} ${sx - 9},${sy + sh * 0.48} ${sx + 7},${sy + sh * 0.72} S${sx - 3},${sy + sh}" stroke="${col.body}" stroke-width="1.3" fill="none" opacity="0.5"/>
+</svg>`;
       }
 
-      /* ── MUSIC ── */
+      let balloonIntv = null;
+
+      function spawnBalloon(extraDelay) {
+        const col =
+          BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)];
+        const size = 44 + Math.random() * 34; // 44–78 px
+        const leftVW = 4 + Math.random() * 92; // 4–96 vw
+        const dur = 7500 + Math.random() * 5500; // 7.5–13 s
+        const sway = (Math.random() - 0.5) * 64; // ±32 px amplitude
+        const rotAmp = (Math.random() - 0.5) * 14; // ±7 deg
+        const swayFreq = 1.8 + Math.random() * 1.4; // sine cycles
+
+        const el = document.createElement("div");
+        el.className = "balloon";
+        el.innerHTML = makeBalloonSVG(col, size);
+        el.style.cssText = `left:${leftVW}vw; opacity:0;`;
+        document.getElementById("balloons").appendChild(el);
+
+        const t0 = performance.now() + (extraDelay || 0);
+
+        function tick(now) {
+          const elapsed = now - t0;
+          if (elapsed < 0) {
+            requestAnimationFrame(tick);
+            return;
+          }
+
+          const t = Math.min(elapsed / dur, 1);
+
+          // Ease: accelerate gently, decelerate at top
+          const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+          // Opacity envelope: fade in 0→8%, hold, fade out 88→100%
+          const opacity = t < 0.08 ? t / 0.08 : t > 0.88 ? (1 - t) / 0.12 : 1;
+
+          const riseVH = eased * 120;
+          const swayX = sway * Math.sin(t * Math.PI * swayFreq);
+          const rot = rotAmp * Math.sin(t * Math.PI * swayFreq + 0.4);
+
+          el.style.opacity = opacity;
+          el.style.transform = `translateY(-${riseVH}vh) translateX(${swayX}px) rotate(${rot}deg)`;
+
+          if (t < 1) requestAnimationFrame(tick);
+          else el.remove();
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      function startBalloons() {
+        // Opening burst: 10 balloons staggered over 2.5 s
+        for (let i = 0; i < 10; i++) spawnBalloon(i * 250);
+        // Steady stream
+        balloonIntv = setInterval(() => spawnBalloon(0), 1200);
+        // After 35 s wind down then final flourish
+        setTimeout(() => {
+          clearInterval(balloonIntv);
+          for (let i = 0; i < 7; i++) spawnBalloon(i * 320);
+        }, 35000);
+      }
+
+      /* ═══════════════════════════════════════════════════════════
+         MUSIC — autoplay on load, fallback to first interaction
+         Browsers require a user gesture before audio can play.
+         We try immediately; if blocked we silently wait for the
+         first tap/click/key anywhere on the page, then start.
+      ═══════════════════════════════════════════════════════════ */
       const musicBtn = document.getElementById("musicBtn");
       const music = document.getElementById("music");
       let playing = false;
-      musicBtn.addEventListener("click", () => {
+
+      music.volume = 0; // start silent, fade in so it's not jarring
+
+      function fadeIn(target, dur) {
+        const step = target / (dur / 50);
+        const iv = setInterval(() => {
+          music.volume = Math.min(music.volume + step, target);
+          if (music.volume >= target) clearInterval(iv);
+        }, 50);
+      }
+
+      function startMusic() {
+        if (playing) return;
+        // Unmute (was set to muted for autoplay policy compliance)
+        music.muted = false;
+        music.volume = 0;
+        music
+          .play()
+          .then(() => {
+            playing = true;
+            musicBtn.textContent = "🔇";
+            fadeIn(0.85, 2000);
+          })
+          .catch(() => {
+            // Autoplay blocked — stay silent until user interacts
+            music.muted = true;
+          });
+      }
+
+      // Try autoplay immediately
+      startMusic();
+
+      // Fallback: play on first user interaction if autoplay was blocked
+      const unlockAudio = () => {
+        startMusic();
+      };
+      ["click", "touchstart", "keydown", "pointerdown"].forEach((ev) =>
+        document.addEventListener(ev, unlockAudio, {
+          once: true,
+          passive: true,
+        }),
+      );
+
+      // Manual toggle button
+      musicBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         if (playing) {
           music.pause();
           musicBtn.textContent = "🎵";
           playing = false;
         } else {
-          music.play();
-          musicBtn.textContent = "🔇";
-          playing = true;
+          music.play().then(() => {
+            playing = true;
+            musicBtn.textContent = "🔇";
+            fadeIn(0.85, 800);
+          });
         }
       });
-      document.body.addEventListener(
-        "click",
-        () => {
-          if (!playing) {
-            music
-              .play()
-              .then(() => {
-                playing = true;
-                musicBtn.textContent = "🔇";
-              })
-              .catch(() => {});
-          }
-        },
-        { once: true },
-      );
     </script>
   </body>
 </html>
