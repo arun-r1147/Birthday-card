@@ -485,13 +485,56 @@
       .location-link {
         animation: linkPulse 2.5s ease-in-out infinite;
       }
+
+      /* MINI MAP */
+      .mini-map {
+        margin-top: 10px;
+        width: 100%;
+        height: 140px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .mini-map iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        filter: grayscale(10%) contrast(1.05);
+      }
+
+      /* ✨ subtle hover lift */
+      .mini-map:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      /* LOCATION LINK (if not already added) */
+      .location-link {
+        display: inline-block;
+        margin-top: 8px;
+        font-size: 13px;
+        opacity: 0.7;
+        text-decoration: none;
+        color: #fff;
+        transition: all 0.3s ease;
+      }
+
+      .location-link:hover {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
     </style>
   </head>
   <body>
     <div class="petals-layer" id="petals"></div>
     <div class="balloon-layer" id="balloons"></div>
 
-    <audio id="music" loop autoplay muted>
+    <audio id="music" loop  muted>
       <source
         src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       />
@@ -609,17 +652,20 @@
                 <div class="d-icon">📍</div>
                 <div>
                   <div class="d-label">Venue</div>
-                  <div class="d-val">
-                    Kakkanad<br /><a
-                      href="https://www.google.com/maps/@10.037943,76.349367,19.25z?entry=ttu&g_ep=EgoyMDI2MDQyMS4wIKXMDSoASAFQAw%3D%3D"
-                      target="_blank"
-                      class="location-link"
+                  <div class="d-val">Kakkanad<br /></div>
+
+                  <!-- 🗺️ MINI MAP -->
+                  <div class="mini-map">
+                    <iframe
+                      src="https://www.google.com/maps?q=10.037943,76.349367&z=15&output=embed"
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
                     >
-                      📌 Location Details
-                    </a>
+                    </iframe>
                   </div>
                 </div>
               </div>
+
               <div class="c-footer">with love &amp; joy 💖</div>
             </div>
           </div>
@@ -842,7 +888,7 @@
         document.getElementById("petals").appendChild(p);
         setTimeout(() => p.remove(), 15000);
       }
-      setInterval(spawnPetal, 700);
+      setInterval(spawnPetal, 600);
 
       /* ═══════════════════════════════════════════════════════════
          BALLOONS — fully rAF-driven, smooth sway & rise
