@@ -1,333 +1,727 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Invite 🎀</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Zoya turns ONE 🎀</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+      :root {
+        --rose: #f2a0b0;
+        --blush: #f9d4dc;
+        --lilac: #ddc8f0;
+        --gold: #e8c97a;
+        --dark: #0e0608;
+      }
 
-<style>
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 100%;
-  font-family: 'Poppins', sans-serif;
-}
+      body {
+        background: var(--dark);
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        overflow-x: hidden;
+      }
 
-/* SCREENS */
-.screen {
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-.screen.active {
-  opacity: 1;
-  z-index: 1;
-}
+      /* ── SCROLL CONTAINER ──
+   Total height = number of slides × scroll-per-slide
+   Each slide gets 100vh of scroll distance to "complete" its stack-up
+*/
+      #scroller {
+        height: calc(
+          5 * 100vh + 100vh
+        ); /* 5 slides × 100vh trigger + final resting */
+        position: relative;
+      }
 
-/* BACKGROUND */
-.bg-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: zoom 12s ease-in-out infinite alternate;
-}
-.overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top, rgba(255,182,193,0.5), transparent);
-}
+      /* ── STACK STAGE ── fixed viewport */
+      #stage {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
 
-/* CONTENT */
-.content {
-  position: relative;
-  z-index: 10;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  color: white;
-  padding: 20px;
-}
+      /* ── EACH CARD ── */
+      .card {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        will-change: transform;
+        border-radius: 0;
+        overflow: hidden;
+        /* Cards sit stacked; JS drives translateY */
+      }
 
-/* TEXT */
-h1 {
-  font-family: 'Pacifico';
-  font-size: clamp(26px,7vw,40px);
-}
-p {
-  font-size: clamp(14px,4vw,18px);
-}
-.name {
-  font-family: 'Pacifico';
-  font-size: clamp(32px,8vw,48px);
-  color: #ff69b4;
-}
+      /* Images */
+      .card-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+      }
 
-/* FINAL CARD */
-.card {
-  background: white;
-  color: #444;
-  padding: 20px;
-  border-radius: 20px;
-}
-.magic-text {
-  font-family: 'Pacifico';
-  font-size: clamp(26px,7vw,40px);
-  margin-bottom: 20px;
-  animation: glow 2s infinite alternate;
-}
-@keyframes glow {
-  from { text-shadow: 0 0 10px #fff; }
-  to { text-shadow: 0 0 25px #ffb6c1; }
-}
-.final-card {
-  opacity: 0;
-  transform: scale(0.7);
-  transition: 1s ease;
-}
-.final-card.show {
-  opacity: 1;
-  transform: scale(1);
-}
+      /* Overlays */
+      .ov-b {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 68%;
+        background: linear-gradient(
+          to top,
+          rgb(0 0 0 / 93%) 0%,
+          rgb(10 4 7 / 63%) 45%,
+          #00000000 100%
+        );
+      }
+      .ov-t {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 26%;
+        background: linear-gradient(
+          to bottom,
+          rgba(10, 4, 7, 0.5) 0%,
+          transparent 100%
+        );
+      }
+      .ov-f {
+        position: absolute;
+        inset: 0;
+        background: rgba(10, 4, 7, 0.35);
+      }
 
-/* SPARKLES */
-.global-sparkles {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 5;
-}
-.sparkle {
-  position: absolute;
-  font-size: 14px;
-  animation: sparkleFloat ease-in-out forwards;
-}
-@keyframes sparkleFloat {
-  0% { transform: translateY(20px) scale(0.6); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
-}
+      /* ── TEXT ── */
+      .card-text {
+        position: absolute;
+        z-index: 10;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0 28px 56px;
+      }
+      .card-text.mid {
+        bottom: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        padding-bottom: 0;
+      }
 
-/* 🎬 CONFETTI BURST */
-.confetti {
-  position: fixed;
-  width: 8px;
-  height: 12px;
-  top: 50%;
-  left: 50%;
-  z-index: 20;
-  border-radius: 2px;
-  transform: translate(-50%, -50%);
-  animation: confettiBurst 1s ease-out forwards,
-             confettiFall 3s linear forwards;
-}
-@keyframes confettiBurst {
-  0% { transform: translate(-50%, -50%) scale(0.5); }
-  100% { transform: translate(var(--x), var(--y)) scale(1); }
-}
-@keyframes confettiFall {
-  0% { transform: translate(var(--x), var(--y)) rotate(0deg); }
-  100% { transform: translate(calc(var(--x) * 1.2), 100vh) rotate(720deg); }
-}
+      .tag {
+        display: inline-block;
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--rose);
+        margin-bottom: 11px;
+        opacity: 0.85;
+      }
+      .t-xl {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 300;
+        font-size: clamp(50px, 14vw, 82px);
+        line-height: 1;
+      }
+      .t-lg {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 300;
+        font-size: clamp(38px, 11vw, 64px);
+        line-height: 1.05;
+      }
+      .t-md {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 300;
+        font-size: clamp(28px, 8vw, 46px);
+        line-height: 1.1;
+      }
+      .italic {
+        font-style: italic;
+      }
+      .gold {
+        color: var(--gold);
+      }
+      .blush {
+        color: var(--blush);
+      }
+      .lilac {
+        color: var(--lilac);
+      }
+      .body-text {
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.75;
+        margin-top: 10px;
+      }
+      .deco-line {
+        width: 36px;
+        height: 1px;
+        background: var(--rose);
+        opacity: 0.5;
+        margin: 13px 0;
+      }
 
-/* BALLOONS */
-.balloon-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-.balloon {
-  position: absolute;
-  bottom: -100px;
-  width: 40px;
-  height: 50px;
-  border-radius: 50%;
-  animation: rise 6s linear forwards;
-}
-.balloon::after {
-  content: '';
-  width: 2px;
-  height: 40px;
-  background: #ccc;
-  position: absolute;
-  top: 50px;
-  left: 50%;
-}
-@keyframes rise {
-  to { transform: translateY(-120vh); }
-}
+      /* ── PROGRESS DOTS ── */
+      #dots {
+        position: fixed;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        transition:
+          background 0.3s,
+          transform 0.3s;
+      }
+      .dot.active {
+        background: var(--rose);
+        transform: scale(1.5);
+      }
 
-/* ANIMATIONS */
-@keyframes zoom {
-  from { transform: scale(1); }
-  to { transform: scale(1.1); }
-}
-</style>
-</head>
+      /* ── SCROLL HINT ── */
+      #scrollHint {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        opacity: 0.45;
+        transition: opacity 0.6s;
+        animation: shb 2.2s ease-in-out infinite;
+        pointer-events: none;
+      }
+      #scrollHint span {
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .sh-bar {
+        width: 1px;
+        height: 22px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+      @keyframes shb {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(7px);
+        }
+      }
 
-<body>
+      /* ── INVITE CARD (last slide) ── */
+      #c5 .card-img {
+        filter: brightness(0.28) saturate(1.4);
+      }
+      #c5 .card-inner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 20px;
+        z-index: 10;
+      }
+      .invite-card {
+        width: 100%;
+        max-width: 356px;
+        background: rgba(255, 255, 255, 0.065);
+        border: 0.5px solid rgba(255, 255, 255, 0.16);
+        border-radius: 24px;
+        padding: 34px 24px 38px;
+        text-align: center;
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+      }
+      .c-badge {
+        display: inline-block;
+        font-size: 9px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 0.5px solid rgba(232, 201, 122, 0.35);
+        border-radius: 40px;
+        padding: 5px 16px;
+        margin-bottom: 20px;
+      }
+      .c-name {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(54px, 16vw, 74px);
+        font-weight: 300;
+        font-style: italic;
+        color: var(--blush);
+        line-height: 1;
+        margin-bottom: 3px;
+      }
+      .c-sub {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 16px;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 24px;
+      }
+      .c-div {
+        width: 100%;
+        height: 0.5px;
+        background: rgba(255, 255, 255, 0.1);
+        margin-bottom: 22px;
+      }
+      .d-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 15px;
+        text-align: left;
+      }
+      .d-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: rgba(242, 160, 176, 0.13);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 13px;
+      }
+      .d-label {
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.33);
+        margin-bottom: 2px;
+      }
+      .d-val {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.25;
+      }
+      .c-footer {
+        margin-top: 24px;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 15px;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.35);
+      }
 
-<div class="global-sparkles" id="globalSparkles"></div>
+      /* ── PETALS ── */
+      .petals-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 100;
+        overflow: hidden;
+      }
+      .petal {
+        position: absolute;
+        top: -30px;
+        opacity: 0;
+        animation: pf linear infinite;
+      }
+      @keyframes pf {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.6;
+        }
+        90% {
+          opacity: 0.3;
+        }
+        100% {
+          transform: translateY(108vh) rotate(400deg);
+          opacity: 0;
+        }
+      }
 
-<audio id="music" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-</audio>
+      /* ── CONFETTI ── */
+      .cp {
+        position: fixed;
+        width: 7px;
+        height: 11px;
+        top: -10px;
+        border-radius: 2px;
+        z-index: 300;
+        pointer-events: none;
+        animation: cf linear forwards;
+      }
+      @keyframes cf {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        85% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(108vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
 
-<!-- SLIDES -->
-<div class="screen active" id="s0">
-  <img src="https://picsum.photos/1080/1920?1" class="bg-img">
-  <div class="overlay"></div>
-  <div class="content">
-    <h1>🎀 You're Invited 🎀</h1>
-    <p>To something magical 💖</p>
-  </div>
-</div>
+      /* ── MUSIC ── */
+      .music-btn {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        z-index: 300;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.09);
+        border: 0.5px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 15px;
+        transition: background 0.2s;
+      }
+      .music-btn:hover {
+        background: rgba(255, 255, 255, 0.17);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="petals-layer" id="petals"></div>
+    <audio id="music" loop>
+      <source
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      />
+    </audio>
+    <button class="music-btn" id="musicBtn">🎵</button>
 
-<div class="screen" id="s1">
-  <img src="https://picsum.photos/1080/1920?2" class="bg-img">
-  <div class="overlay"></div>
-  <div class="content">
-    <h1>A little princess is turning ONE 👶✨</h1>
-  </div>
-</div>
+    <div id="scroller">
+      <div id="stage">
+        <!-- CARD 1 — COVER -->
+        <div class="card" id="c1">
+          <img
+            src="assets/zoya-9.webp"
+            class="card-img"
+            style="object-position: center 20%"
+            alt=""
+          />
+          <div class="ov-t"></div>
+          <div class="ov-b"></div>
+          <div class="card-text">
+            <div class="tag">An intimate invitation</div>
+            <h1 class="t-xl">
+              You're<br /><span class="gold italic">invited</span>
+            </h1>
+            <p class="body-text">To something soft, sweet, and full of love.</p>
+          </div>
+        </div>
 
-<div class="screen" id="s2">
-  <img src="https://picsum.photos/1080/1920?3" class="bg-img">
-  <div class="overlay"></div>
-  <div class="content">
-    <p>Our little sunshine 🌼</p>
-  </div>
-</div>
+        <!-- CARD 2 -->
+        <div class="card" id="c2">
+          <img
+            src="assets/zoya-10.webp"
+            class="card-img"
+            style="object-position: center 30%"
+            alt=""
+          />
+          <div class="ov-t"></div>
+          <div class="ov-b"></div>
+          <div class="card-text">
+            <div class="tag">One little year</div>
+            <h2 class="t-lg">
+              A princess<br /><span class="blush italic">turns one</span>
+            </h2>
+            <div class="deco-line"></div>
+            <p class="body-text">365 days of wonder, smiles, and magic.</p>
+          </div>
+        </div>
 
-<div class="screen" id="s3">
-  <img src="https://picsum.photos/1080/1920?4" class="bg-img">
-  <div class="overlay"></div>
-  <div class="content">
-    <h1>Celebrating</h1>
-    <div class="name">Baby Name 🎀</div>
-  </div>
-</div>
+        <!-- CARD 3 -->
+        <div class="card" id="c3">
+          <img
+            src="assets/zoya-3.jpg"
+            class="card-img"
+            style="object-position: center 40%"
+            alt=""
+          />
+          <div class="ov-f"></div>
+          <div class="ov-b"></div>
+          <div class="card-text mid">
+            <div class="tag" style="display: block; text-align: center">
+              Our little sunshine
+            </div>
+            <h2 class="t-lg italic blush" style="text-align: center">Zoya</h2>
+            <p class="body-text" style="text-align: center">
+              She lights up every room she enters.
+            </p>
+          </div>
+        </div>
 
-<div class="screen" id="s4">
-  <img src="https://picsum.photos/1080/1920?5" class="bg-img">
-  <div class="overlay"></div>
+        <!-- CARD 4 -->
+        <div class="card" id="c4">
+          <img
+            src="assets/zoya-7.webp"
+            class="card-img"
+            style="object-position: center 15%"
+            alt=""
+          />
+          <div class="ov-t"></div>
+          <div class="ov-b"></div>
+          <div class="card-text">
+            <div class="tag">Mark your calendars</div>
+            <h2 class="t-md">
+              Come celebrate<br /><span class="lilac italic">with us</span>
+            </h2>
+            <p class="body-text">
+              A day filled with cake, confetti, and endless joy awaits.
+            </p>
+          </div>
+        </div>
 
-  <div class="content">
-    <div class="magic-text">✨ A Special Day ✨</div>
-    <div class="final-card" id="finalCard">
-      <div class="card">
-        <h2>🎂 Join us!</h2>
-        <p>📅 Date: 10th May</p>
-        <p>⏰ Time: 5:00 PM</p>
-        <p>📍 Location: Your Venue</p>
-        <p>💖 Let’s celebrate together!</p>
+        <!-- CARD 5 — INVITE -->
+        <div class="card" id="c5">
+          <img
+            src="assets/zoya-4.webp"
+            class="card-img"
+            style="object-position: center 50%"
+            alt=""
+          />
+          <div class="card-inner">
+            <div class="invite-card" id="inviteCard">
+              <div class="c-badge">Birthday Celebration</div>
+              <div class="c-name">Zoya</div>
+              <div class="c-sub">is turning one</div>
+              <div class="c-div"></div>
+              <div class="d-row">
+                <div class="d-icon">📅</div>
+                <div>
+                  <div class="d-label">Date</div>
+                  <div class="d-val">10th May, 2025</div>
+                </div>
+              </div>
+              <div class="d-row">
+                <div class="d-icon">⏰</div>
+                <div>
+                  <div class="d-label">Time</div>
+                  <div class="d-val">5:00 PM onwards</div>
+                </div>
+              </div>
+              <div class="d-row">
+                <div class="d-icon">📍</div>
+                <div>
+                  <div class="d-label">Venue</div>
+                  <div class="d-val">
+                    Your Venue Name<br /><span
+                      style="font-size: 14px; opacity: 0.55"
+                      >City, State</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="c-footer">with love &amp; joy 💖</div>
+            </div>
+          </div>
+        </div>
       </div>
+      <!-- /stage -->
     </div>
-  </div>
+    <!-- /scroller -->
 
-  <div class="balloon-container" id="balloons"></div>
-</div>
+    <!-- Dots -->
+    <div id="dots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
 
-<script>
-let current = 0;
-const total = 5;
-const duration = 3500;
+    <!-- Scroll hint -->
+    <div id="scrollHint">
+      <span>scroll</span>
+      <div class="sh-bar"></div>
+    </div>
 
-/* MUSIC */
-document.body.addEventListener("click", () => {
-  document.getElementById("music").play();
-}, { once: true });
+    <script>
+      /* ── STICKY STACK ENGINE ──
+   Cards are absolutely positioned in a fixed stage.
+   Card 1 sits at translateY(0) — always the base.
+   Cards 2–5 start at translateY(100%) (below viewport).
+   As the user scrolls into each card's "slot", it slides up to translateY(0).
+   Previous cards stay pinned at 0 underneath (covered by newer ones).
+   Each card gets SCROLL_PER_CARD px of scroll distance to animate.
+*/
 
-/* SLIDES */
-function nextScreen() {
-  document.getElementById("s" + current).classList.remove("active");
-  current++;
+      const CARDS = [
+        document.getElementById("c1"),
+        document.getElementById("c2"),
+        document.getElementById("c3"),
+        document.getElementById("c4"),
+        document.getElementById("c5"),
+      ];
+      const N = CARDS.length;
+      const SCROLL_PER_CARD = window.innerHeight; // 1 × vh per card
 
-  if (current < total) {
-    document.getElementById("s" + current).classList.add("active");
-  }
+      // Card 1 is base — always at 0
+      // Cards 2–N start off-screen below
+      CARDS.forEach((c, i) => {
+        c.style.transform = i === 0 ? "translateY(0)" : "translateY(100%)";
+        c.style.zIndex = i + 1; // higher cards sit on top
+      });
 
-  if (current === 4) {
-    setTimeout(showFinalMagic, 1200);
-  }
-}
+      function clamp(v, a, b) {
+        return Math.max(a, Math.min(b, v));
+      }
+      function easeOut(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
 
-setInterval(() => {
-  if (current < total - 1) nextScreen();
-}, duration);
+      let currentActive = 0;
+      let confettiDone = false;
 
-/* FINAL MAGIC */
-function showFinalMagic() {
-  document.getElementById("finalCard").classList.add("show");
-  setTimeout(startConfetti, 300);
-  setTimeout(startConfetti, 900);
-  releaseBalloons();
-}
+      function onScroll() {
+        const sy = window.scrollY;
 
-/* SPARKLES */
-setInterval(() => {
-  const s = document.createElement("div");
-  s.className = "sparkle";
-  s.innerHTML = Math.random() > 0.5 ? "✨" : "💖";
+        CARDS.forEach((card, i) => {
+          if (i === 0) return; // base card never moves
 
-  s.style.left = Math.random() * 100 + "vw";
-  s.style.animationDuration = (5 + Math.random() * 3) + "s";
+          // This card animates during scroll range: (i-1)*SCROLL_PER_CARD → i*SCROLL_PER_CARD
+          const start = (i - 1) * SCROLL_PER_CARD;
+          const end = i * SCROLL_PER_CARD;
 
-  document.getElementById("globalSparkles").appendChild(s);
+          const raw = clamp((sy - start) / (end - start), 0, 1);
+          const progress = easeOut(raw);
 
-  setTimeout(() => s.remove(), 8000);
-}, 300);
+          // translateY goes from 100% → 0%
+          const ty = (1 - progress) * 100;
+          card.style.transform = `translateY(${ty}%)`;
+        });
 
-/* 🎬 CONFETTI BURST */
-function startConfetti() {
-  const count = 100;
+        // Active dot
+        const slideIndex = Math.min(Math.floor(sy / SCROLL_PER_CARD), N - 1);
+        if (slideIndex !== currentActive) {
+          document
+            .querySelectorAll(".dot")
+            .forEach((d, i) => d.classList.toggle("active", i === slideIndex));
+          currentActive = slideIndex;
 
-  for (let i = 0; i < count; i++) {
-    const c = document.createElement("div");
-    c.className = "confetti";
+          // Confetti when last card arrives
+          if (slideIndex === N - 1 && !confettiDone) {
+            confettiDone = true;
+            setTimeout(launchConfetti, 400);
+          }
+        }
 
-    const angle = Math.random() * 2 * Math.PI;
-    const radius = 200 + Math.random() * 300;
+        // Scroll hint
+        document.getElementById("scrollHint").style.opacity =
+          sy > 40 ? "0" : "0.45";
+      }
 
-    const x = Math.cos(angle) * radius + "px";
-    const y = Math.sin(angle) * radius + "px";
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
 
-    c.style.setProperty('--x', x);
-    c.style.setProperty('--y', y);
-    c.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+      /* ── PETALS ── */
+      const petalEmoji = ["🌸", "🌺", "✨", "💮", "🩷", "💫", "⭐"];
+      function spawnPetal() {
+        const p = document.createElement("div");
+        p.className = "petal";
+        p.textContent =
+          petalEmoji[Math.floor(Math.random() * petalEmoji.length)];
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.fontSize = 9 + Math.random() * 9 + "px";
+        p.style.animationDuration = 7 + Math.random() * 6 + "s";
+        p.style.animationDelay = Math.random() * 3 + "s";
+        document.getElementById("petals").appendChild(p);
+        setTimeout(() => p.remove(), 15000);
+      }
+      setInterval(spawnPetal, 700);
 
-    document.body.appendChild(c);
+      /* ── CONFETTI ── */
+      function launchConfetti() {
+        const cols = [
+          "#f2a0b0",
+          "#ddc8f0",
+          "#e8c97a",
+          "#f9d4dc",
+          "#b8e8f8",
+          "#a8f0d0",
+          "#fff",
+        ];
+        for (let i = 0; i < 100; i++) {
+          setTimeout(() => {
+            const c = document.createElement("div");
+            c.className = "cp";
+            c.style.left = Math.random() * 100 + "vw";
+            c.style.background = cols[Math.floor(Math.random() * cols.length)];
+            c.style.animationDuration = 2.5 + Math.random() * 2.5 + "s";
+            c.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 6000);
+          }, i * 25);
+        }
+      }
 
-    setTimeout(() => c.remove(), 4000);
-  }
-}
-
-/* BALLOONS */
-function releaseBalloons() {
-  const colors = ["#ffb6c1","#ffd6cc","#e6ccff","#d4f5e9"];
-
-  for (let i = 0; i < 15; i++) {
-    let b = document.createElement("div");
-    b.className = "balloon";
-
-    b.style.left = Math.random() * 100 + "vw";
-    b.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-    document.getElementById("balloons").appendChild(b);
-  }
-}
-</script>
-
-</body>
+      /* ── MUSIC ── */
+      const musicBtn = document.getElementById("musicBtn");
+      const music = document.getElementById("music");
+      let playing = false;
+      musicBtn.addEventListener("click", () => {
+        if (playing) {
+          music.pause();
+          musicBtn.textContent = "🎵";
+          playing = false;
+        } else {
+          music.play();
+          musicBtn.textContent = "🔇";
+          playing = true;
+        }
+      });
+      document.body.addEventListener(
+        "click",
+        () => {
+          if (!playing) {
+            music
+              .play()
+              .then(() => {
+                playing = true;
+                musicBtn.textContent = "🔇";
+              })
+              .catch(() => {});
+          }
+        },
+        { once: true },
+      );
+    </script>
+  </body>
 </html>
