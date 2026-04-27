@@ -1048,15 +1048,16 @@
 
       let playing = false;
 
-      // Start muted autoplay (allowed by browser)
+      // Try muted autoplay on load
       window.addEventListener("load", () => {
+        music.muted = true;
+        music.volume = 0;
         music.play().catch(() => {});
       });
 
       // Smooth fade-in
       function fadeIn(target = 0.85, duration = 2000) {
         music.muted = false;
-        music.volume = 0;
 
         const step = target / (duration / 50);
         const interval = setInterval(() => {
@@ -1065,21 +1066,31 @@
         }, 50);
       }
 
-      // First user interaction → enable sound
+      // First real interaction
       function enableSound() {
         if (playing) return;
 
-        fadeIn();
-        playing = true;
-        musicBtn.textContent = "🔇";
+        music.muted = false;
+
+        music
+          .play()
+          .then(() => {
+            playing = true;
+            musicBtn.textContent = "🔇";
+            fadeIn();
+          })
+          .catch(() => {
+            // If still blocked, do nothing
+            console.log("Autoplay blocked");
+          });
       }
 
-      // Trigger on ANY interaction
-      ["click", "touchstart", "scroll", "keydown"].forEach((event) => {
+      // Attach interaction listeners
+      ["click", "touchstart", "keydown", "scroll"].forEach((event) => {
         document.addEventListener(event, enableSound, { once: true });
       });
 
-      // Manual toggle button
+      // Button toggle (FIXED)
       musicBtn.addEventListener("click", (e) => {
         e.stopPropagation();
 
@@ -1088,12 +1099,19 @@
           musicBtn.textContent = "🎵";
           playing = false;
         } else {
-          music.play();
-          fadeIn(0.85, 800);
-          musicBtn.textContent = "🔇";
-          playing = true;
+          music
+            .play()
+            .then(() => {
+              playing = true;
+              musicBtn.textContent = "🔇";
+              fadeIn(0.85, 800);
+            })
+            .catch(() => {
+              console.log("User gesture required");
+            });
         }
       });
+      
       // const musicBtn = document.getElementById("musicBtn");
       // const music = document.getElementById("music");
       // let playing = false;
