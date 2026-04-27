@@ -539,7 +539,10 @@
     <div class="petals-layer" id="petals"></div>
     <div class="balloon-layer" id="balloons"></div>
 
-    <audio id="music" autoplay muted>
+    <audio id="music" autoplay>
+          <div id="autoplay-warning" style="display:none;color:#f2a0b0;text-align:center;margin-top:10px;">
+            Tap anywhere to enable music 🎵
+          </div>
       <source src="assets/bgm.mp3" />
     </audio>
     <button class="music-btn" id="musicBtn">🎵</button>
@@ -1056,9 +1059,10 @@
             playing = true;
             musicBtn.textContent = "🔇";
             fadeIn(0.85, 2000);
+            document.getElementById("autoplay-warning").style.display = "none";
           })
           .catch(() => {
-            music.muted = true;
+            document.getElementById("autoplay-warning").style.display = "block";
           });
       }
 
