@@ -540,9 +540,17 @@
     <div class="balloon-layer" id="balloons"></div>
 
     <audio id="music" autoplay>
-          <div id="autoplay-warning" style="display:none;color:#f2a0b0;text-align:center;margin-top:10px;">
-            Tap anywhere to enable music 🎵
-          </div>
+      <div
+        id="autoplay-warning"
+        style="
+          display: none;
+          color: #f2a0b0;
+          text-align: center;
+          margin-top: 10px;
+        "
+      >
+        Tap anywhere to enable music 🎵
+      </div>
       <source src="assets/bgm.mp3" />
     </audio>
     <button class="music-btn" id="musicBtn">🎵</button>
@@ -1035,60 +1043,111 @@
       /* ═══════════════════════════════════════════════════════════
          MUSIC
       ═══════════════════════════════════════════════════════════ */
-      const musicBtn = document.getElementById("musicBtn");
       const music = document.getElementById("music");
+      const musicBtn = document.getElementById("musicBtn");
+
       let playing = false;
 
-      music.volume = 0;
+      // Start muted autoplay (allowed by browser)
+      window.addEventListener("load", () => {
+        music.play().catch(() => {});
+      });
 
-      function fadeIn(target, dur) {
-        const step = target / (dur / 50);
-        const iv = setInterval(() => {
+      // Smooth fade-in
+      function fadeIn(target = 0.85, duration = 2000) {
+        music.muted = false;
+        music.volume = 0;
+
+        const step = target / (duration / 50);
+        const interval = setInterval(() => {
           music.volume = Math.min(music.volume + step, target);
-          if (music.volume >= target) clearInterval(iv);
+          if (music.volume >= target) clearInterval(interval);
         }, 50);
       }
 
-      function startMusic() {
+      // First user interaction → enable sound
+      function enableSound() {
         if (playing) return;
-        music.muted = false;
-        music.volume = 0;
-        music
-          .play()
-          .then(() => {
-            playing = true;
-            musicBtn.textContent = "🔇";
-            fadeIn(0.85, 2000);
-            document.getElementById("autoplay-warning").style.display = "none";
-          })
-          .catch(() => {
-            document.getElementById("autoplay-warning").style.display = "block";
-          });
+
+        fadeIn();
+        playing = true;
+        musicBtn.textContent = "🔇";
       }
 
-      startMusic();
+      // Trigger on ANY interaction
+      ["click", "touchstart", "scroll", "keydown"].forEach((event) => {
+        document.addEventListener(event, enableSound, { once: true });
+      });
 
-      ["click", "touchstart", "keydown", "pointerdown", "scroll"].forEach((ev) =>
-        document.addEventListener(ev, startMusic, {
-          once: true,
-          passive: true,
-        }),
-      );
-
+      // Manual toggle button
       musicBtn.addEventListener("click", (e) => {
         e.stopPropagation();
+
         if (playing) {
           music.pause();
           musicBtn.textContent = "🎵";
           playing = false;
         } else {
-          music.play().then(() => {
-            playing = true;
-            musicBtn.textContent = "🔇";
-            fadeIn(0.85, 800);
-          });
+          music.play();
+          fadeIn(0.85, 800);
+          musicBtn.textContent = "🔇";
+          playing = true;
         }
       });
+      // const musicBtn = document.getElementById("musicBtn");
+      // const music = document.getElementById("music");
+      // let playing = false;
+
+      // music.volume = 0;
+
+      // function fadeIn(target, dur) {
+      //   const step = target / (dur / 50);
+      //   const iv = setInterval(() => {
+      //     music.volume = Math.min(music.volume + step, target);
+      //     if (music.volume >= target) clearInterval(iv);
+      //   }, 50);
+      // }
+
+      // function startMusic() {
+      //   if (playing) return;
+      //   music.muted = false;
+      //   music.volume = 0;
+      //   music
+      //     .play()
+      //     .then(() => {
+      //       playing = true;
+      //       musicBtn.textContent = "🔇";
+      //       fadeIn(0.85, 2000);
+      //       document.getElementById("autoplay-warning").style.display = "none";
+      //     })
+      //     .catch(() => {
+      //       document.getElementById("autoplay-warning").style.display = "block";
+      //     });
+      // }
+
+      // startMusic();
+
+      // ["click", "touchstart", "keydown", "pointerdown", "scroll"].forEach((ev) =>
+      //   document.addEventListener(ev, startMusic, {
+      //     once: true,
+      //     passive: true,
+      //   }),
+      // );
+
+      // musicBtn.addEventListener("click", (e) => {
+      //   e.stopPropagation();
+      //   if (playing) {
+      //     music.pause();
+      //     musicBtn.textContent = "🎵";
+      //     playing = false;
+      //   } else {
+      //     music.play().then(() => {
+      //       playing = true;
+      //       musicBtn.textContent = "🔇";
+      //       fadeIn(0.85, 800);
+      //     });
+      //   }
+      // });
     </script>
   </body>
 </html>
