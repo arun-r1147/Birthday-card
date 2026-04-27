@@ -1068,7 +1068,7 @@
 
       startMusic();
 
-      ["click", "touchstart", "keydown", "pointerdown"].forEach((ev) =>
+      ["click", "touchstart", "keydown", "pointerdown", "scroll"].forEach((ev) =>
         document.addEventListener(ev, startMusic, {
           once: true,
           passive: true,
